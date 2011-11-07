@@ -26,13 +26,17 @@ private:
     FILE* arquivoDestino;
     int tamanhoArquivoOrigem;
     int tamanhoArquivoDestino;
-    std::vector<int>* frequenciaCaracteres;
-    std::vector<int>* quantidadeBits;
+    int const tamanhoVetorAscii;
+    int* frequenciaCaracteres;
+    int* quantidadeBits;
     
 public:
-    void leArquivo(int* argc, char** argv);
+    Arquivo();
+    void leArquivo(char* nomeArquivo);
     void contaCaracteres(FILE *f);
-    
+    void contaBits(std::vector<int>* quantidadeBits);
+    void criaArquivoDestino(FILE* arquivoDestino);
+    int gravaArquivoDestino(FILE* arquivoDestino, int* tamanhoArquivoDestino);
 };
 
 class Estatistica{
@@ -50,12 +54,10 @@ private:
 public:
     void encodeHuffman();
     void decodeHuffman();
-     
+    
 };
 
-
-
-
+bool verificaArquivo(char* nomeArquivo);
 
 #endif	/* HUFFMAN_H */
 
