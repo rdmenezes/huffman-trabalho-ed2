@@ -18,6 +18,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <queue>
 #include <algorithm>
 
 class Arquivo{
@@ -31,13 +32,21 @@ private:
     int* quantidadeBits;
     
 public:
-    Arquivo();
-    void leArquivo(char* nomeArquivo);
-    void contaCaracteres(FILE *f);
+    Arquivo(char* nomeArquivo);
+    void contaCaracteres();
     void contaBits(std::vector<int>* quantidadeBits);
     void criaArquivoDestino(FILE* arquivoDestino);
     int gravaArquivoDestino(FILE* arquivoDestino, int* tamanhoArquivoDestino);
 };
+    class Contagem{
+    private:
+        int caracterAscii;
+        int frequenciaCaracterAscii;
+        
+    public:
+        std::priority_queue<Contagem> frequenciaAscii;
+        
+    };
 
 class Estatistica{
 private:
