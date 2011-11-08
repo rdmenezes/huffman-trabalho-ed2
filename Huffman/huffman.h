@@ -30,23 +30,23 @@ private:
     int const tamanhoVetorAscii;
     int* frequenciaCaracteres;
     int* quantidadeBits;
+    std::priority_queue<Contagem> frequenciaAscii;
     
 public:
     Arquivo(char* nomeArquivo);
+    class Contagem{
+    protected:
+        int caracterAscii;
+        int frequenciaCaracterAscii;
+    };
+    
     void contaCaracteres();
+    void criaListaPrioridade();
     void contaBits(std::vector<int>* quantidadeBits);
     void criaArquivoDestino(FILE* arquivoDestino);
     int gravaArquivoDestino(FILE* arquivoDestino, int* tamanhoArquivoDestino);
 };
-    class Contagem{
-    private:
-        int caracterAscii;
-        int frequenciaCaracterAscii;
-        
-    public:
-        std::priority_queue<Contagem> frequenciaAscii;
-        
-    };
+    
 
 class Estatistica{
 private:
