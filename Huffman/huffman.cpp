@@ -25,6 +25,20 @@ void Arquivo::contaCaracteres(){
     fclose(arquivoOrigem);
 }
 
+void Arquivo::filtraFrequencia(){
+    int i;
+    i = tamanhoVetorAscii;
+    while (--i > 0){
+        if (frequenciaCaracteres[i] > 0){
+            Contagem.caracterAscii = [i]
+            Contagem.frequenciaCaracterAscii = frequenciaCaracteres[i];
+            Contagem.frequenciaAscii.push();
+        }
+            
+        
+    }
+}
+
 bool verificaArquivo(char* nomeArquivo){
     FILE* arquivo;
     if((arquivo = fopen(nomeArquivo, "r")) == NULL){

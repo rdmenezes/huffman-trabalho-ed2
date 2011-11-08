@@ -21,7 +21,8 @@
 #include <queue>
 #include <algorithm>
 
-class Arquivo{
+class Arquivo {
+    friend class Contagem;
 private:
     FILE* arquivoOrigem;
     FILE* arquivoDestino;
@@ -30,40 +31,41 @@ private:
     int const tamanhoVetorAscii;
     int* frequenciaCaracteres;
     int* quantidadeBits;
-    std::priority_queue<Contagem> frequenciaAscii;
-    
+
+
 public:
     Arquivo(char* nomeArquivo);
-    class Contagem{
-    protected:
-        int caracterAscii;
-        int frequenciaCaracterAscii;
-    };
-    
     void contaCaracteres();
-    void criaListaPrioridade();
+    void filtraFrequencia();
     void contaBits(std::vector<int>* quantidadeBits);
     void criaArquivoDestino(FILE* arquivoDestino);
     int gravaArquivoDestino(FILE* arquivoDestino, int* tamanhoArquivoDestino);
 };
-    
 
-class Estatistica{
+class Contagem {
+    friend class Arquivo;
+private:
+    int caracterAscii;
+    int frequenciaCaracterAscii;
+    std::priority_queue<Contagem> frequenciaAscii;
+};
+
+class Estatistica {
 private:
     int taxaCompactacao;
     int mediaBits;
     int tempoConsumido;
-    
+
 public:
 };
 
-class Huffman{
+class Huffman {
 private:
-    
+
 public:
     void encodeHuffman();
     void decodeHuffman();
-    
+
 };
 
 bool verificaArquivo(char* nomeArquivo);
