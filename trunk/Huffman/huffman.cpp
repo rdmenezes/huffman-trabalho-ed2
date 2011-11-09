@@ -33,7 +33,7 @@ void Arquivo::filtraFrequencia() {
         if (frequenciaCaracteres[i] > 0) {
             contagem->caracterAscii = i;
             contagem->frequenciaCaracterAscii = frequenciaCaracteres[i];
-            contagem->frequenciaAscii.push(Contagem);
+            contagem->frequenciaAscii.push(contagem);
         }
     }
 }
