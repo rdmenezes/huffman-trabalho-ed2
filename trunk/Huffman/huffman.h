@@ -48,6 +48,10 @@ private:
     int caracterAscii;
     int frequenciaCaracterAscii;
     std::priority_queue<Contagem> frequenciaAscii;
+public:
+    bool operator< (const Contagem &A)const;
+    bool operator== (const Contagem &A)const;
+    bool ordenaPorFrequencia(Contagem A, Contagem B);
 };
 
 class Estatistica {
