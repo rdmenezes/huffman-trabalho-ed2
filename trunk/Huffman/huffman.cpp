@@ -28,12 +28,12 @@ void Arquivo::contaCaracteres() {
 void Arquivo::filtraFrequencia() {
     int i;
     i = tamanhoVetorAscii;
-    Contagem *contagem = new Contagem();
     while (--i > 0) {
         if (frequenciaCaracteres[i] > 0) {
+            Contagem* contagem = new Contagem();
             contagem->caracterAscii = i;
             contagem->frequenciaCaracterAscii = frequenciaCaracteres[i];
-            contagem->frequenciaAscii.push(contagem);
+            contagem->frequenciaAscii.push(contagem); //retirar daqui.
         }
     }
 }
