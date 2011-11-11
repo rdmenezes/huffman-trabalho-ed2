@@ -22,7 +22,6 @@
 #include <algorithm>
 
 class Arquivo {
-    friend class Contagem;
 private:
     FILE* arquivoOrigem;
     FILE* arquivoDestino;
@@ -47,7 +46,7 @@ class Contagem {
 private:
     int caracterAscii;
     int frequenciaCaracterAscii;
-    std::priority_queue<Contagem> frequenciaAscii;
+    std::priority_queue<Contagem*> frequenciaAscii;
 public:
     bool operator< (const Contagem &A)const;
     bool operator== (const Contagem &A)const;
