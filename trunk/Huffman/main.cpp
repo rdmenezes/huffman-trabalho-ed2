@@ -29,6 +29,9 @@ int main(int argc, char** argv) {
     
     /*Conta caracteres do arquivo*/
     compactar->contaCaracteres();
+    Estatistica* estatistica = new Estatistica();
+    estatistica->filtraFrequencia(compactar->getTamanhoVetorAscii(),
+            compactar->getFrequenciaCaracteres());
     
     /*Testes com argc e argv*/
     cout << endl;
