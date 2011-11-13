@@ -25,32 +25,30 @@ class Arquivo {
 private:
     FILE* arquivoOrigem;
     FILE* arquivoDestino;
-    int tamanhoArquivoOrigem;
-    int tamanhoArquivoDestino;
-    int const tamanhoVetorAscii;
+    long tamanhoArquivoOrigem;
+    long tamanhoArquivoDestino;
+    const int tamanhoVetorAscii;
     int* frequenciaCaracteres;
-    int* quantidadeBits;
-
-
 public:
     Arquivo(char* nomeArquivo);
-    void contaCaracteres();
-    void filtraFrequencia();
-    void contaBits(std::vector<int>* quantidadeBits);
+    int* contaCaracteres();
     void criaArquivoDestino(FILE* arquivoDestino);
     int gravaArquivoDestino(FILE* arquivoDestino, int* tamanhoArquivoDestino);
+    const int getTamanhoVetorAscii() const;
+    int* getFrequenciaCaracteres() const;
+
 };
 
-class Contagem {
-    friend class Arquivo;
+class Filtragem {
+    friend class Estatistica;
 private:
     int caracterAscii;
     int frequenciaCaracterAscii;
-    std::priority_queue<Contagem*> frequenciaAscii;
 public:
-    bool operator< (const Contagem &A)const;
-    bool operator== (const Contagem &A)const;
-    bool ordenaPorFrequencia(Contagem A, Contagem B);
+    bool operator<(const Filtragem &A)const;
+    bool operator==(const Filtragem &A)const;
+    bool ordenaPorFrequencia(Filtragem A, Filtragem B);
+
 };
 
 class Estatistica {
@@ -58,13 +56,15 @@ private:
     int taxaCompactacao;
     int mediaBits;
     int tempoConsumido;
+    std::priority_queue<Filtragem*>frequenciaAscii;
 
 public:
+    void filtraFrequencia(int tamanhoVetor, int* vetorFrequenciaCaracteres);
 };
 
 class Huffman {
 private:
-
+    int* quantidadeBits;
 public:
     void encodeHuffman();
     void decodeHuffman();

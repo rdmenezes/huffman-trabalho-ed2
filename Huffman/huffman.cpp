@@ -2,15 +2,27 @@
 
 using namespace std;
 
-Arquivo::Arquivo(char* nomeArquivo) : tamanhoVetorAscii(256) {
+Arquivo::Arquivo(char* nomeArquivo) : tamanhoVetorAscii(256) {    
     frequenciaCaracteres = new int[tamanhoVetorAscii];
     int i;
     for (i = 0; i < tamanhoVetorAscii; i++)
         frequenciaCaracteres[i] = 0;
     arquivoOrigem = fopen(nomeArquivo, "r");
+    /*Lê tamanho arquivo*/
+    fseek(arquivoOrigem, 0, SEEK_END);
+    tamanhoArquivoOrigem = ftell(arquivoOrigem);
+    rewind(arquivoOrigem);
 }
 
-void Arquivo::contaCaracteres() {
+const int Arquivo::getTamanhoVetorAscii() const {
+        return tamanhoVetorAscii;
+    }
+
+int* Arquivo::getFrequenciaCaracteres() const {
+        return frequenciaCaracteres;
+    }
+
+int* Arquivo::contaCaracteres() {
     int i, caracterArquivo;
     caracterArquivo = getc(arquivoOrigem);
     while (caracterArquivo != EOF) {
@@ -25,32 +37,33 @@ void Arquivo::contaCaracteres() {
     fclose(arquivoOrigem);
 }
 
-void Arquivo::filtraFrequencia() {
+void Estatistica::filtraFrequencia(int tamanhoVetor,
+        int* vetorFrequenciaCaracteres) {
     int i;
-    i = tamanhoVetorAscii;
+    i = tamanhoVetor;
     while (--i > 0) {
-        if (frequenciaCaracteres[i] > 0) {
-            Contagem* contagem = new Contagem();
+        if (vetorFrequenciaCaracteres[i] > 0) {
+            Filtragem* contagem = new Filtragem();
             contagem->caracterAscii = i;
-            contagem->frequenciaCaracterAscii = frequenciaCaracteres[i];
-            contagem->frequenciaAscii.push(contagem); //retirar daqui.
+            contagem->frequenciaCaracterAscii = vetorFrequenciaCaracteres[i];
+            frequenciaAscii.push(contagem);
         }
     }
 }
 
-bool Contagem::operator<(const Contagem &A) const {
+bool Filtragem::operator<(const Filtragem &A) const {
     if (frequenciaCaracterAscii < A.frequenciaCaracterAscii)
         return true;
     return false;
 }
 
-bool Contagem::operator==(const Contagem &A) const {
+bool Filtragem::operator==(const Filtragem &A) const {
     if (frequenciaCaracterAscii == A.frequenciaCaracterAscii)
         return true;
     return false;
 }
 
-bool Contagem::ordenaPorFrequencia(Contagem A, Contagem B) {
+bool Filtragem::ordenaPorFrequencia(Filtragem A, Filtragem B) {
     if (A.frequenciaCaracterAscii < B.frequenciaCaracterAscii)
         return true;
     return false;
