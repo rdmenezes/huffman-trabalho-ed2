@@ -37,6 +37,7 @@ int* Arquivo::contaCaracteres() {
     fclose(arquivoOrigem);
 }
 
+
 int Filtragem::getCaracterAscii() const {
     return caracterAscii;
 }
@@ -63,11 +64,10 @@ bool Filtragem::operator==(const Filtragem &A) const {
         return true;
     return false;
 }
-
-bool Filtragem::ordenaPorFrequencia(Filtragem* A, Filtragem* B) {
-    if (A->getFrequenciaCaracterAscii() < B->getFrequenciaCaracterAscii())
-        return true;
-    return false;
+bool Compara::comp(Filtragem* a, Filtragem* b){
+       if (a->getFrequenciaCaracterAscii() < b->getFrequenciaCaracterAscii())
+       return true;
+   return false;
 }
 
 void Estatistica::filtraFrequencia(int tamanhoVetor,
