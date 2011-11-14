@@ -50,7 +50,8 @@ public:
     int getFrequenciaCaracterAscii() const;
     bool operator<(const Filtragem &A)const;
     bool operator==(const Filtragem &A)const;
-    bool ordenaPorFrequencia(Filtragem A, Filtragem B);
+    bool ordenaPorFrequencia(Filtragem* A, Filtragem* B);
+
     //std::ostream & operator <<(std::ostream &os, const Filtragem & p);
 };
 
@@ -59,10 +60,11 @@ private:
     int taxaCompactacao;
     int mediaBits;
     int tempoConsumido;
-    std::priority_queue<Filtragem*, std::vector<Filtragem*>, Filtragem.ordenaPorFrequencia>frequenciaAscii;
+    std::priority_queue<Filtragem*, std::vector<Filtragem*>, ordenaPorFrequencia>frequenciaAscii;
 
 public:
     void filtraFrequencia(int tamanhoVetor, int* vetorFrequenciaCaracteres);
+
 };
 
 class Huffman {
