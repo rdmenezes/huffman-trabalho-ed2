@@ -50,9 +50,14 @@ public:
     int getFrequenciaCaracterAscii() const;
     bool operator<(const Filtragem &A)const;
     bool operator==(const Filtragem &A)const;
-    bool ordenaPorFrequencia(Filtragem* A, Filtragem* B);
+    //bool ordenaPorFrequencia(Filtragem* A, Filtragem* B);
 
     //std::ostream & operator <<(std::ostream &os, const Filtragem & p);
+};
+
+class Compara{
+public:
+       bool comp(Filtragem* a, Filtragem* b);
 };
 
 class Estatistica {
@@ -60,7 +65,7 @@ private:
     int taxaCompactacao;
     int mediaBits;
     int tempoConsumido;
-    std::priority_queue<Filtragem*, std::vector<Filtragem*>, ordenaPorFrequencia>frequenciaAscii;
+    std::priority_queue<Filtragem*, std::vector<Filtragem*>, Compara>frequenciaAscii;
 
 public:
     void filtraFrequencia(int tamanhoVetor, int* vetorFrequenciaCaracteres);
