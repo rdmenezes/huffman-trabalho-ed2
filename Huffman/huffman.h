@@ -45,10 +45,13 @@ private:
     int caracterAscii;
     int frequenciaCaracterAscii;
 public:
+
+    int getCaracterAscii() const;
+    int getFrequenciaCaracterAscii() const;
     bool operator<(const Filtragem &A)const;
     bool operator==(const Filtragem &A)const;
     bool ordenaPorFrequencia(Filtragem A, Filtragem B);
-
+    //std::ostream & operator <<(std::ostream &os, const Filtragem & p);
 };
 
 class Estatistica {
