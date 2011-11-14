@@ -64,8 +64,8 @@ bool Filtragem::operator==(const Filtragem &A) const {
     return false;
 }
 
-bool Filtragem::ordenaPorFrequencia(Filtragem A, Filtragem B) {
-    if (A.frequenciaCaracterAscii < B.frequenciaCaracterAscii)
+bool Filtragem::ordenaPorFrequencia(Filtragem* A, Filtragem* B) {
+    if (A->getFrequenciaCaracterAscii() < B->getFrequenciaCaracterAscii())
         return true;
     return false;
 }
