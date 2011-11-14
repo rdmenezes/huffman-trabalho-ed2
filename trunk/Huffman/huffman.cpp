@@ -88,6 +88,14 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
     }
 
 }
+void Huffman::imprimefila(std::priority_queue<Filtragem*,std::vector<Filtragem*>,compara> fila){
+    cout <<"HUFFMAN:::FICA NA PILHA ASSIM:" << endl;
+    while (!fila.empty()) {
+        Filtragem* frequencia = fila.top();
+        cout << (*frequencia) << endl; // Print highest priority string
+        fila.pop(); // Remmove highest priority string
+    }
+}
 
 bool verificaArquivo(char* nomeArquivo) {
     FILE* arquivo;

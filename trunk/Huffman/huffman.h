@@ -56,8 +56,9 @@ public:
     //std::ostream & operator <<(std::ostream &os, const Filtragem & p);
 };
 
-
-class compara //retirado de http://www.cplusplus.com/reference/stl/priority_queue/priority_queue/
+/*retirado de http://www.cplusplus.com/reference/stl/priority_queue/priority_queue/*
+ * e modificado para atender as necessidades do programa*/
+class compara 
 {
   bool reverse;
 public:
@@ -80,6 +81,9 @@ private:
 public:
     void filtraFrequencia(int tamanhoVetor, int* vetorFrequenciaCaracteres);
 
+    std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara> getFrequenciaAscii() {
+        return frequenciaAscii;
+    }
 };
 
 class Huffman {
@@ -88,6 +92,7 @@ private:
 public:
     void encodeHuffman();
     void decodeHuffman();
+    void imprimefila(std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara> fila);
 
 };
 
