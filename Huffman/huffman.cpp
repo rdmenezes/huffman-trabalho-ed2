@@ -64,11 +64,7 @@ bool Filtragem::operator==(const Filtragem &A) const {
         return true;
     return false;
 }
-bool Compara::comp(Filtragem* a, Filtragem* b){
-       if (a->getFrequenciaCaracterAscii() < b->getFrequenciaCaracterAscii())
-       return true;
-   return false;
-}
+
 
 void Estatistica::filtraFrequencia(int tamanhoVetor,
         int* vetorFrequenciaCaracteres) {
