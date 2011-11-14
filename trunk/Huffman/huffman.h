@@ -21,6 +21,8 @@
 #include <queue>
 #include <algorithm>
 
+
+
 class Arquivo {
 private:
     FILE* arquivoOrigem;
@@ -56,6 +58,8 @@ public:
     //std::ostream & operator <<(std::ostream &os, const Filtragem & p);
 };
 
+
+
 /*retirado de http://www.cplusplus.com/reference/stl/priority_queue/priority_queue/*
  * e modificado para atender as necessidades do programa*/
 class compara 
@@ -70,18 +74,18 @@ public:
     else return (lhs->getFrequenciaCaracterAscii()>rhs->getFrequenciaCaracterAscii());
   }
 };
-
+typedef std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara > filaprioridade;
 class Estatistica {
 private:
     int taxaCompactacao;
     int mediaBits;
     int tempoConsumido;
-    std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara > frequenciaAscii;
+    filaprioridade frequenciaAscii;
 
 public:
     void filtraFrequencia(int tamanhoVetor, int* vetorFrequenciaCaracteres);
 
-    std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara> getFrequenciaAscii() {
+    filaprioridade getFrequenciaAscii() {
         return frequenciaAscii;
     }
 };
@@ -92,7 +96,7 @@ private:
 public:
     void encodeHuffman();
     void decodeHuffman();
-    void imprimefila(std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara> fila);
+    void imprimefila(filaprioridade fila);
 
 };
 
