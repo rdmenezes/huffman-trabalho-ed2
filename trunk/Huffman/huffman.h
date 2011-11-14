@@ -75,6 +75,7 @@ public:
   }
 };
 typedef std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara > filaprioridade;
+
 class Estatistica {
 private:
     int taxaCompactacao;

@@ -79,14 +79,14 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
             cout << (*contagem) << endl;
             frequenciaAscii.push(contagem);
         }
-    }
+    }/*
     cout <<"FICA NA PILHA ASSIM:" << endl;
     while (!frequenciaAscii.empty()) {
         Filtragem* frequencia = frequenciaAscii.top();
         cout << (*frequencia) << endl; // Print highest priority string
         frequenciaAscii.pop(); // Remmove highest priority string
     }
-
+*/
 }
 void Huffman::imprimefila(filaprioridade fila){
     filaprioridade teste = fila;
