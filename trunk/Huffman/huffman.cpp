@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Arquivo::Arquivo(char* nomeArquivo) : tamanhoVetorAscii(256) {    
+Arquivo::Arquivo(char* nomeArquivo) : tamanhoVetorAscii(256) {
     frequenciaCaracteres = new int[tamanhoVetorAscii];
     int i;
     for (i = 0; i < tamanhoVetorAscii; i++)
@@ -15,12 +15,12 @@ Arquivo::Arquivo(char* nomeArquivo) : tamanhoVetorAscii(256) {
 }
 
 const int Arquivo::getTamanhoVetorAscii() const {
-        return tamanhoVetorAscii;
-    }
+    return tamanhoVetorAscii;
+}
 
 int* Arquivo::getFrequenciaCaracteres() const {
-        return frequenciaCaracteres;
-    }
+    return frequenciaCaracteres;
+}
 
 int* Arquivo::contaCaracteres() {
     int i, caracterArquivo;
@@ -37,22 +37,22 @@ int* Arquivo::contaCaracteres() {
     fclose(arquivoOrigem);
 }
 
-    int Filtragem::getCaracterAscii() const {
-        return caracterAscii;
-    }
+int Filtragem::getCaracterAscii() const {
+    return caracterAscii;
+}
 
-    int Filtragem::getFrequenciaCaracterAscii() const {
-        return frequenciaCaracterAscii;
-    }
- /*Sobrecarga do operador << para a classe do índice primário*/
- std::ostream & operator << (std::ostream &os, const Filtragem* & p)
-{
-	os << "caractere: " << p->getCaracterAscii() << ", frequencia: " << 
-                p->getFrequenciaCaracterAscii();
-	return os;
- }
- 
- bool Filtragem::operator<(const Filtragem &A) const {
+int Filtragem::getFrequenciaCaracterAscii() const {
+    return frequenciaCaracterAscii;
+}
+
+/*Sobrecarga do operador << para a classe Filtragem*/
+std::ostream & operator <<(std::ostream &os, const Filtragem* & p) {
+    os << "caractere: " << p->getCaracterAscii() << ", frequencia: " <<
+            p->getFrequenciaCaracterAscii();
+    return os;
+}
+
+bool Filtragem::operator<(const Filtragem &A) const {
     if (frequenciaCaracterAscii < A.frequenciaCaracterAscii)
         return true;
     return false;
@@ -70,7 +70,6 @@ bool Filtragem::ordenaPorFrequencia(Filtragem A, Filtragem B) {
     return false;
 }
 
-
 void Estatistica::filtraFrequencia(int tamanhoVetor,
         int* vetorFrequenciaCaracteres) {
     int i;
@@ -84,15 +83,13 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
             frequenciaAscii.push(contagem);
         }
     }
-    i=0;
     while (!frequenciaAscii.empty()) {
-       cout << frequenciaAscii.top() << endl;  // Print highest priority string
-       frequenciaAscii.pop();                    // Remmove highest priority string
-       i++;
+        Filtragem* frequencia = frequenciaAscii.pop();
+        cout << frequencia << endl; // Print highest priority string
+        frequenciaAscii.pop(); // Remmove highest priority string
     }
-    
-}
 
+}
 
 bool verificaArquivo(char* nomeArquivo) {
     FILE* arquivo;
