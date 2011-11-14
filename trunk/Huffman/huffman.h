@@ -59,7 +59,7 @@ private:
     int taxaCompactacao;
     int mediaBits;
     int tempoConsumido;
-    std::priority_queue<Filtragem*>frequenciaAscii;
+    std::priority_queue<Filtragem*, std::vector<Filtragem*>, Filtragem.ordenaPorFrequencia>frequenciaAscii;
 
 public:
     void filtraFrequencia(int tamanhoVetor, int* vetorFrequenciaCaracteres);
