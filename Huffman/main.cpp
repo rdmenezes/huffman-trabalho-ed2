@@ -32,6 +32,8 @@ int main(int argc, char** argv) {
     Estatistica* estatistica = new Estatistica();
     estatistica->filtraFrequencia(compactar->getTamanhoVetorAscii(),
             compactar->getFrequenciaCaracteres());
+    Huffman* codifica = new Huffman();
+    codifica->imprimefila(estatistica->getFrequenciaAscii());
     
     /*Testes com argc e argv*/
     cout << endl;
