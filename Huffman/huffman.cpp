@@ -46,9 +46,9 @@ int Filtragem::getFrequenciaCaracterAscii() const {
 }
 
 /*Sobrecarga do operador << para a classe Filtragem*/
-std::ostream & operator <<(std::ostream &os, const Filtragem* & p) {
-    os << "caractere: " << p->getCaracterAscii() << ", frequencia: " <<
-            p->getFrequenciaCaracterAscii();
+std::ostream & operator <<(std::ostream &os, const Filtragem & p) {
+    os << "caractere: " << p.getCaracterAscii() << ", frequencia: " <<
+            p.getFrequenciaCaracterAscii();
     return os;
 }
 
@@ -74,18 +74,20 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
         int* vetorFrequenciaCaracteres) {
     int i;
     i = tamanhoVetor;
+    cout <<"ENTRA NA PILHA ASSIM:" << endl;
     while (--i > 0) {
         if (vetorFrequenciaCaracteres[i] > 0) {
             Filtragem* contagem = new Filtragem();
             contagem->caracterAscii = i;
             contagem->frequenciaCaracterAscii = vetorFrequenciaCaracteres[i];
-            cout << contagem << endl;
+            cout << (*contagem) << endl;
             frequenciaAscii.push(contagem);
         }
     }
+    cout <<"FICA NA PILHA ASSIM:" << endl;
     while (!frequenciaAscii.empty()) {
-        Filtragem* frequencia = frequenciaAscii.pop();
-        cout << frequencia << endl; // Print highest priority string
+        Filtragem* frequencia = frequenciaAscii.top();
+        cout << (*frequencia) << endl; // Print highest priority string
         frequenciaAscii.pop(); // Remmove highest priority string
     }
 
