@@ -39,6 +39,7 @@ public:
 
 };
 
+
 class Filtragem {
     friend class Estatistica;
 private:
@@ -55,9 +56,18 @@ public:
     //std::ostream & operator <<(std::ostream &os, const Filtragem & p);
 };
 
-class Compara{
+
+class compara //retirado de http://www.cplusplus.com/reference/stl/priority_queue/priority_queue/
+{
+  bool reverse;
 public:
-       bool comp(Filtragem* a, Filtragem* b);
+  compara(const bool& revparam=false)
+    {reverse=revparam;}
+  bool operator() (const Filtragem* lhs, const Filtragem* rhs) const
+  {
+    if (reverse) return (lhs->getFrequenciaCaracterAscii()<rhs->getFrequenciaCaracterAscii());
+    else return (lhs->getFrequenciaCaracterAscii()>rhs->getFrequenciaCaracterAscii());
+  }
 };
 
 class Estatistica {
@@ -65,7 +75,7 @@ private:
     int taxaCompactacao;
     int mediaBits;
     int tempoConsumido;
-    std::priority_queue<Filtragem*, std::vector<Filtragem*>, Compara>frequenciaAscii;
+    std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara > frequenciaAscii;
 
 public:
     void filtraFrequencia(int tamanhoVetor, int* vetorFrequenciaCaracteres);
