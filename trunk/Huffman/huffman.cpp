@@ -37,8 +37,8 @@ int* Arquivo::contaCaracteres() {
     fclose(arquivoOrigem);
 }
 
-Filtragem::Filtragem(): esq(NULL), dir(NULL){
-    
+Filtragem::Filtragem() : esq(NULL), dir(NULL) {
+
 }
 
 int Filtragem::getCaracterAscii() const {
@@ -52,7 +52,7 @@ int Filtragem::getFrequenciaCaracterAscii() const {
 /*Sobrecarga do operador << para a classe Filtragem*/
 std::ostream & operator <<(std::ostream &os, const Filtragem & p) {
     os << "caractere: " << p.getCaracterAscii() << ", frequencia: " <<
-            p.getFrequenciaCaracterAscii() << ", folha: " << p.isLeaf() << 
+            p.getFrequenciaCaracterAscii() << ", folha: " << p.isLeaf() <<
             ", bincode: " << p.getCodigobinario();
     return os;
 }
@@ -63,19 +63,17 @@ bool Filtragem::operator<(const Filtragem &A) const {
     return false;
 }
 
-
 bool Filtragem::operator==(const Filtragem &A) const {
     if (frequenciaCaracterAscii == A.frequenciaCaracterAscii)
         return true;
     return false;
 }
 
-
 void Estatistica::filtraFrequencia(int tamanhoVetor,
         int* vetorFrequenciaCaracteres) {
     int i;
     i = tamanhoVetor;
-    cout <<"ENTRA NA PILHA ASSIM:" << endl;
+    cout << "ENTRA NA PILHA ASSIM:" << endl;
     while (--i > 0) {
         if (vetorFrequenciaCaracteres[i] > 0) {
             Filtragem* contagem = new Filtragem();
@@ -95,17 +93,38 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
     }
 */
 }
-void Huffman::encodeHuffman(filaprioridade fila){
+
+void Huffman::encodeHuffman(filaprioridade fila) {
     arvoreCodificada = fila;
-    cout <<"HUFFMAN:::FICA NA PILHA ASSIM:" << endl;
-    while (!arvoreCodificada.size() > 1) {
+    cout << "HUFFMAN:::FICA NA PILHA ASSIM:" << endl;
+    while (arvoreCodificada.size() > 1) {
         Filtragem* no = new Filtragem();
-        Filtragem* no->esq = arvoreCodificada.top();
-        //arvoreCodificada.pop();
-        Filtragem* no->dir = arvoreCodificada.top();
+        no->esq = arvoreCodificada.top();
         arvoreCodificada.pop();
+        no->dir = arvoreCodificada.top();
+        arvoreCodificada.pop();
+        no->leaf = false;
+        no->caracterAscii = 257;
+        no->frequenciaCaracterAscii = (no->dir->frequenciaCaracterAscii +
+                no->esq->frequenciaCaracterAscii);
+
         arvoreCodificada.push(no);
     }
+    Filtragem* root = new Filtragem;
+    root = arvoreCodificada.top();
+    root->leaf = false;
+    root->caracterAscii = 258;
+    root->frequenciaCaracterAscii = (root->dir->frequenciaCaracterAscii +
+            root->esq->frequenciaCaracterAscii);
+    arvoreCodificada.pop();
+    cout << (*root) << endl;
+
+    /*cout << "FICA NA PILHA ASSIM:" << endl;
+    while (!arvoreCodificada.empty()) {
+        Filtragem* frequencia = arvoreCodificada.top();
+        cout << (*frequencia) << endl; // Print highest priority string
+        arvoreCodificada.pop(); // Remmove highest priority string
+    }*/
 }
 
 bool verificaArquivo(char* nomeArquivo) {
