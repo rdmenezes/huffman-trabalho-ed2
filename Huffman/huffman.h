@@ -22,7 +22,6 @@
 #include <algorithm>
 
 
-
 class Arquivo {
 private:
     FILE* arquivoOrigem;
@@ -44,18 +43,37 @@ public:
 
 class Filtragem {
     friend class Estatistica;
+    friend class Huffman;
 private:
+    bool leaf;
     int caracterAscii;
     int frequenciaCaracterAscii;
+    long codigobinario;
+    Filtragem* esq;
+    Filtragem* dir;
 public:
-
+    Filtragem();
     int getCaracterAscii() const;
     int getFrequenciaCaracterAscii() const;
     bool operator<(const Filtragem &A)const;
     bool operator==(const Filtragem &A)const;
-    //bool ordenaPorFrequencia(Filtragem* A, Filtragem* B);
 
-    //std::ostream & operator <<(std::ostream &os, const Filtragem & p);
+    long getCodigobinario() const {
+        return codigobinario;
+    }
+
+    void setCodigobinario(long codigobinario) {
+        this->codigobinario = codigobinario;
+    }
+
+    bool isLeaf() const {
+        return leaf;
+    }
+
+    void setLeaf(bool leaf) {
+        this->leaf = leaf;
+    }
+
 };
 
 
@@ -71,6 +89,8 @@ public:
   bool operator() (const Filtragem* lhs, const Filtragem* rhs) const
   {
     if (reverse) return (lhs->getFrequenciaCaracterAscii()<rhs->getFrequenciaCaracterAscii());
+    if (lhs->getFrequenciaCaracterAscii() == rhs->getFrequenciaCaracterAscii()) return 
+            (lhs->getCaracterAscii() > rhs->getCaracterAscii());
     else return (lhs->getFrequenciaCaracterAscii()>rhs->getFrequenciaCaracterAscii());
   }
 };
@@ -94,10 +114,11 @@ public:
 class Huffman {
 private:
     int* quantidadeBits;
+    filaprioridade arvoreCodificada;
 public:
-    void encodeHuffman();
+    void encodeHuffman(filaprioridade fila);
     void decodeHuffman();
-    void imprimefila(filaprioridade fila);
+    void imprimefila();
 
 };
 
