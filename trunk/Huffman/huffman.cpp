@@ -37,6 +37,9 @@ int* Arquivo::contaCaracteres() {
     fclose(arquivoOrigem);
 }
 
+Filtragem::Filtragem(): esq(NULL), dir(NULL){
+    
+}
 
 int Filtragem::getCaracterAscii() const {
     return caracterAscii;
@@ -49,15 +52,17 @@ int Filtragem::getFrequenciaCaracterAscii() const {
 /*Sobrecarga do operador << para a classe Filtragem*/
 std::ostream & operator <<(std::ostream &os, const Filtragem & p) {
     os << "caractere: " << p.getCaracterAscii() << ", frequencia: " <<
-            p.getFrequenciaCaracterAscii();
+            p.getFrequenciaCaracterAscii() << ", folha: " << p.isLeaf() << 
+            ", bincode: " << p.getCodigobinario();
     return os;
 }
 
 bool Filtragem::operator<(const Filtragem &A) const {
-    if (frequenciaCaracterAscii < A.frequenciaCaracterAscii)
+    if (frequenciaCaracterAscii < A.frequenciaCaracterAscii || caracterAscii < A.caracterAscii)
         return true;
     return false;
 }
+
 
 bool Filtragem::operator==(const Filtragem &A) const {
     if (frequenciaCaracterAscii == A.frequenciaCaracterAscii)
@@ -76,6 +81,8 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
             Filtragem* contagem = new Filtragem();
             contagem->caracterAscii = i;
             contagem->frequenciaCaracterAscii = vetorFrequenciaCaracteres[i];
+            contagem->leaf = true;
+            contagem->codigobinario = 0;
             cout << (*contagem) << endl;
             frequenciaAscii.push(contagem);
         }
@@ -88,13 +95,16 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
     }
 */
 }
-void Huffman::imprimefila(filaprioridade fila){
-    filaprioridade teste = fila;
+void Huffman::encodeHuffman(filaprioridade fila){
+    arvoreCodificada = fila;
     cout <<"HUFFMAN:::FICA NA PILHA ASSIM:" << endl;
-    while (!teste.empty()) {
-        Filtragem* frequencia = teste.top();
-        cout << (*frequencia) << endl; // Print highest priority string
-        teste.pop(); // Remmove highest priority string
+    while (!arvoreCodificada.size() > 1) {
+        Filtragem* no = new Filtragem();
+        Filtragem* no->esq = arvoreCodificada.top();
+        //arvoreCodificada.pop();
+        Filtragem* no->dir = arvoreCodificada.top();
+        arvoreCodificada.pop();
+        arvoreCodificada.push(no);
     }
 }
 
