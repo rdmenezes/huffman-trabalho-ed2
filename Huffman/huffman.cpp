@@ -12,6 +12,7 @@ Arquivo::Arquivo(char* nomeArquivo) : tamanhoVetorAscii(256) {
     fseek(arquivoOrigem, 0, SEEK_END);
     tamanhoArquivoOrigem = ftell(arquivoOrigem);
     rewind(arquivoOrigem);
+    cout << "tamanho do arquivo: " << tamanhoArquivoOrigem << endl;
 }
 
 const int Arquivo::getTamanhoVetorAscii() const {
@@ -77,6 +78,8 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
     while (--i > 0) {
         if (vetorFrequenciaCaracteres[i] > 0) {
             Filtragem* contagem = new Filtragem();
+            contagem->dir = NULL;
+            contagem->esq = NULL;
             contagem->caracterAscii = i;
             contagem->frequenciaCaracterAscii = vetorFrequenciaCaracteres[i];
             contagem->leaf = true;
@@ -100,8 +103,10 @@ void Huffman::encodeHuffman(filaprioridade fila) {
     while (arvoreCodificada.size() > 1) {
         Filtragem* no = new Filtragem();
         no->esq = arvoreCodificada.top();
+        no->esq->codigobinario = 0;
         arvoreCodificada.pop();
         no->dir = arvoreCodificada.top();
+        no->dir->codigobinario = 1;
         arvoreCodificada.pop();
         no->leaf = false;
         no->caracterAscii = 257;
@@ -126,6 +131,7 @@ void Huffman::encodeHuffman(filaprioridade fila) {
         arvoreCodificada.pop(); // Remmove highest priority string
     }*/
 }
+
 
 bool verificaArquivo(char* nomeArquivo) {
     FILE* arquivo;
