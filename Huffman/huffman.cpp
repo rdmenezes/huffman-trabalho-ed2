@@ -4,6 +4,7 @@ using namespace std;
 
 Arquivo::Arquivo(char* nomeArquivo) : tamanhoVetorAscii(256) {
     frequenciaCaracteres = new int[tamanhoVetorAscii];
+    textoArquivoOrigem = "";
     int i;
     for (i = 0; i < tamanhoVetorAscii; i++)
         frequenciaCaracteres[i] = 0;
@@ -29,14 +30,16 @@ int* Arquivo::contaCaracteres() {
     int caracterArquivo;
     caracterArquivo = getc(arquivoOrigem);
     while (caracterArquivo != EOF) {
-        frequenciaCaracteres[caracterArquivo]++;
+
         //putchar(caracterArquivo);
         //cout << caracterArquivo << endl;
+        textoArquivoOrigem += caracterArquivo;
         caracterArquivo = getc(arquivoOrigem);
+        frequenciaCaracteres[caracterArquivo]++;
     }
     /*Teste para mostrar a tabela de frequencia*/
     //for (i = 0; i < tamanhoVetorAscii; i++)
-        //cout << frequenciaCaracteres[i] << "[" << i << "]" << endl;
+    //cout << frequenciaCaracteres[i] << "[" << i << "]" << endl;
     fclose(arquivoOrigem);
 }
 
@@ -100,6 +103,7 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
 
 Huffman::Huffman() {
     codigoBinario = "";
+    textoArquivoDestino = "";
 }
 
 void Huffman::encodeHuffman(filaprioridade fila) {
@@ -147,6 +151,7 @@ void Huffman::criaCodigo(Filtragem* root, string bincode) {
         //cout<<"ESQ - bincode:::::"<<bincode<<endl;
         if (root->isLeaf()) {
             root->setCodigobinario(bincode);
+            tabelaConversao[root->getCaracterAscii()] = root->getCodigobinario();
             //cout << *(root) << endl;
             tabelaCodigoBinario.push(root);
             //cout << *tabelaCodigoBinario.top() << endl;
@@ -154,13 +159,22 @@ void Huffman::criaCodigo(Filtragem* root, string bincode) {
     }
 }
 
-void Huffman::imprimeTeste() {
+void Huffman::imprimeTeste(string texto) {
+    int i;
     cout << endl << endl << endl;
     cout << "IMPRIMINDO CODE:" << endl;
-    while (!tabelaCodigoBinario.empty()) {
+    for (it = tabelaConversao.begin(); it != tabelaConversao.end(); it++)
+        cout << (*it).first << " => " << (*it).second << endl;
+    for (i = 0; i < texto.length(); i++) {
+        //textoArquivoDestino += tabelaConversao.find((int) texto[i])->second;
+        cout << tabelaConversao.find((int) texto[i])->second;
+        //cout << texto[i]; //(unsigned int)
+    }
+    //cout << textoArquivoDestino << endl;
+    /*while (!tabelaCodigoBinario.empty()) {
         cout << *tabelaCodigoBinario.top() << endl; // Print highest priority string
         tabelaCodigoBinario.pop(); // Remmove highest priority string
-    }
+    }*/
 }
 
 bool verificaArquivo(char* nomeArquivo) {

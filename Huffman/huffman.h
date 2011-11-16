@@ -19,6 +19,7 @@
 #include <fstream>
 #include <vector>
 #include <queue>
+#include <map>
 #include <algorithm>
 
 class Arquivo {
@@ -29,6 +30,7 @@ private:
     long tamanhoArquivoDestino;
     const int tamanhoVetorAscii;
     int* frequenciaCaracteres;
+    std::string textoArquivoOrigem;
 public:
     Arquivo(char* nomeArquivo);
     int* contaCaracteres();
@@ -36,6 +38,16 @@ public:
     int gravaArquivoDestino(FILE* arquivoDestino, int* tamanhoArquivoDestino);
     const int getTamanhoVetorAscii() const;
     int* getFrequenciaCaracteres() const;
+
+    std::string getTextoArquivoOrigem() const {
+        return textoArquivoOrigem;
+    }
+    void codificaCaracteres(std::map<int, std::string>::iterator it, std::map<int, std::string> tabela);
+
+    FILE* getArquivoOrigem() const {
+        return arquivoOrigem;
+    }
+
 
 };
 
@@ -130,14 +142,17 @@ private:
     int* quantidadeBits;
     filaprioridade arvoreCodificada;
     filaprioridade tabelaCodigoBinario;
+    std::map <int, std::string> tabelaConversao;
+    std::map <int, std::string>::iterator it;
     Filtragem* root;
     std::string codigoBinario;
+    std::string textoArquivoDestino;
 public:
     filaprioridade code;
     Huffman();
     void encodeHuffman(filaprioridade fila);
     void decodeHuffman();
-    void imprimeTeste();
+    void imprimeTeste(std::string texto);
 
     Filtragem* getRoot() const {
         return root;
@@ -164,7 +179,13 @@ public:
     }
     void criaCodigo(Filtragem* root, std::string bincode);
 
+    std::map<int, std::string>::iterator getIt() const {
+        return it;
+    }
 
+    std::map<int, std::string> getTabelaConversao() const {
+        return tabelaConversao;
+    }
 
 
 };
