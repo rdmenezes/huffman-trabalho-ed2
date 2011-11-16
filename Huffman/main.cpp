@@ -34,7 +34,8 @@ int main(int argc, char** argv) {
             compactar->getFrequenciaCaracteres());
     Huffman* codifica = new Huffman();
     codifica->encodeHuffman(estatistica->getFrequenciaAscii());
-    
+    codifica->criaCodigo(codifica->getRoot(), codifica->getCodigoBinario());
+    codifica->imprimeTeste();
     /*Testes com argc e argv*/
     cout << endl;
     cout << argc << endl;
