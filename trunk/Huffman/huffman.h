@@ -21,7 +21,6 @@
 #include <queue>
 #include <algorithm>
 
-
 class Arquivo {
 private:
     FILE* arquivoOrigem;
@@ -40,7 +39,6 @@ public:
 
 };
 
-
 class Filtragem {
     friend class Estatistica;
     friend class Huffman;
@@ -48,7 +46,7 @@ private:
     bool leaf;
     int caracterAscii;
     int frequenciaCaracterAscii;
-    long codigobinario;
+    std::string codigobinario;
     Filtragem* esq;
     Filtragem* dir;
 public:
@@ -58,11 +56,11 @@ public:
     bool operator<(const Filtragem &A)const;
     bool operator==(const Filtragem &A)const;
 
-    long getCodigobinario() const {
+    std::string getCodigobinario() const {
         return codigobinario;
     }
 
-    void setCodigobinario(long codigobinario) {
+    void setCodigobinario(std::string codigobinario) {
         this->codigobinario = codigobinario;
     }
 
@@ -74,25 +72,41 @@ public:
         this->leaf = leaf;
     }
 
+    Filtragem* getDir() const {
+        return dir;
+    }
+
+    void setDir(Filtragem* dir) {
+        this->dir = dir;
+    }
+
+    Filtragem* getEsq() const {
+        return esq;
+    }
+
+    void setEsq(Filtragem* esq) {
+        this->esq = esq;
+    }
+
+
 };
-
-
 
 /*retirado de http://www.cplusplus.com/reference/stl/priority_queue/priority_queue/*
  * e modificado para atender as necessidades do programa*/
-class compara 
-{
-  bool reverse;
+class compara {
+    bool reverse;
 public:
-  compara(const bool& revparam=false)
-    {reverse=revparam;}
-  bool operator() (const Filtragem* lhs, const Filtragem* rhs) const
-  {
-    if (reverse) return (lhs->getFrequenciaCaracterAscii()<rhs->getFrequenciaCaracterAscii());
-    if (lhs->getFrequenciaCaracterAscii() == rhs->getFrequenciaCaracterAscii()) return 
+
+    compara(const bool& revparam = false) {
+        reverse = revparam;
+    }
+
+    bool operator() (const Filtragem* lhs, const Filtragem* rhs) const {
+        if (reverse) return (lhs->getFrequenciaCaracterAscii() < rhs->getFrequenciaCaracterAscii());
+        if (lhs->getFrequenciaCaracterAscii() == rhs->getFrequenciaCaracterAscii()) return
             (lhs->getCaracterAscii() > rhs->getCaracterAscii());
-    else return (lhs->getFrequenciaCaracterAscii()>rhs->getFrequenciaCaracterAscii());
-  }
+        else return (lhs->getFrequenciaCaracterAscii() > rhs->getFrequenciaCaracterAscii());
+    }
 };
 typedef std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara > filaprioridade;
 
@@ -115,10 +129,43 @@ class Huffman {
 private:
     int* quantidadeBits;
     filaprioridade arvoreCodificada;
+    filaprioridade tabelaCodigoBinario;
+    Filtragem* root;
+    std::string codigoBinario;
 public:
+    filaprioridade code;
+    Huffman();
     void encodeHuffman(filaprioridade fila);
     void decodeHuffman();
-    void imprimefila();
+    void imprimeTeste();
+
+    Filtragem* getRoot() const {
+        return root;
+    }
+
+    void setRoot(Filtragem* root) {
+        this->root = root;
+    }
+
+    std::string getCodigoBinario() const {
+        return codigoBinario;
+    }
+
+    void setCodigoBinario(std::string codigoBinario) {
+        this->codigoBinario = codigoBinario;
+    }
+
+    void setTabelaCodigoBinario(filaprioridade tabelaCodigoBinario) {
+        this->tabelaCodigoBinario = tabelaCodigoBinario;
+    }
+
+    filaprioridade getTabelaCodigoBinario() const {
+        return tabelaCodigoBinario;
+    }
+    void criaCodigo(Filtragem* root, std::string bincode);
+
+
+
 
 };
 

@@ -12,6 +12,7 @@ Arquivo::Arquivo(char* nomeArquivo) : tamanhoVetorAscii(256) {
     fseek(arquivoOrigem, 0, SEEK_END);
     tamanhoArquivoOrigem = ftell(arquivoOrigem);
     rewind(arquivoOrigem);
+    cout << endl << endl << endl;
     cout << "tamanho do arquivo: " << tamanhoArquivoOrigem << endl;
 }
 
@@ -24,7 +25,8 @@ int* Arquivo::getFrequenciaCaracteres() const {
 }
 
 int* Arquivo::contaCaracteres() {
-    int i, caracterArquivo;
+    //int i;
+    int caracterArquivo;
     caracterArquivo = getc(arquivoOrigem);
     while (caracterArquivo != EOF) {
         frequenciaCaracteres[caracterArquivo]++;
@@ -33,8 +35,8 @@ int* Arquivo::contaCaracteres() {
         caracterArquivo = getc(arquivoOrigem);
     }
     /*Teste para mostrar a tabela de frequencia*/
-    for (i = 0; i < tamanhoVetorAscii; i++)
-        cout << frequenciaCaracteres[i] << "[" << i << "]" << endl;
+    //for (i = 0; i < tamanhoVetorAscii; i++)
+        //cout << frequenciaCaracteres[i] << "[" << i << "]" << endl;
     fclose(arquivoOrigem);
 }
 
@@ -74,7 +76,7 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
         int* vetorFrequenciaCaracteres) {
     int i;
     i = tamanhoVetor;
-    cout << "ENTRA NA PILHA ASSIM:" << endl;
+    //cout << "ENTRA NA PILHA ASSIM:" << endl;
     while (--i > 0) {
         if (vetorFrequenciaCaracteres[i] > 0) {
             Filtragem* contagem = new Filtragem();
@@ -83,8 +85,7 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
             contagem->caracterAscii = i;
             contagem->frequenciaCaracterAscii = vetorFrequenciaCaracteres[i];
             contagem->leaf = true;
-            contagem->codigobinario = 0;
-            cout << (*contagem) << endl;
+            //cout << (*contagem) << endl;
             frequenciaAscii.push(contagem);
         }
     }/*
@@ -97,16 +98,20 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
 */
 }
 
+Huffman::Huffman() {
+    codigoBinario = "";
+}
+
 void Huffman::encodeHuffman(filaprioridade fila) {
     arvoreCodificada = fila;
     cout << "HUFFMAN:::FICA NA PILHA ASSIM:" << endl;
     while (arvoreCodificada.size() > 1) {
         Filtragem* no = new Filtragem();
         no->esq = arvoreCodificada.top();
-        no->esq->codigobinario = 0;
+        no->esq->codigobinario = "0";
         arvoreCodificada.pop();
         no->dir = arvoreCodificada.top();
-        no->dir->codigobinario = 1;
+        no->dir->codigobinario = "1";
         arvoreCodificada.pop();
         no->leaf = false;
         no->caracterAscii = 257;
@@ -115,14 +120,14 @@ void Huffman::encodeHuffman(filaprioridade fila) {
 
         arvoreCodificada.push(no);
     }
-    Filtragem* root = new Filtragem;
+    root = new Filtragem;
     root = arvoreCodificada.top();
     root->leaf = false;
     root->caracterAscii = 258;
     root->frequenciaCaracterAscii = (root->dir->frequenciaCaracterAscii +
             root->esq->frequenciaCaracterAscii);
     arvoreCodificada.pop();
-    cout << (*root) << endl;
+    cout << (*root) << endl << endl << endl;
 
     /*cout << "FICA NA PILHA ASSIM:" << endl;
     while (!arvoreCodificada.empty()) {
@@ -132,6 +137,31 @@ void Huffman::encodeHuffman(filaprioridade fila) {
     }*/
 }
 
+void Huffman::criaCodigo(Filtragem* root, string bincode) {
+    if (root != NULL) {
+
+        bincode += root->getCodigobinario();
+        criaCodigo(root->getDir(), bincode);
+        //cout<<"DIR - bincode:::::"<<bincode<<endl;
+        criaCodigo(root->getEsq(), bincode);
+        //cout<<"ESQ - bincode:::::"<<bincode<<endl;
+        if (root->isLeaf()) {
+            root->setCodigobinario(bincode);
+            //cout << *(root) << endl;
+            tabelaCodigoBinario.push(root);
+            //cout << *tabelaCodigoBinario.top() << endl;
+        }
+    }
+}
+
+void Huffman::imprimeTeste() {
+    cout << endl << endl << endl;
+    cout << "IMPRIMINDO CODE:" << endl;
+    while (!tabelaCodigoBinario.empty()) {
+        cout << *tabelaCodigoBinario.top() << endl; // Print highest priority string
+        tabelaCodigoBinario.pop(); // Remmove highest priority string
+    }
+}
 
 bool verificaArquivo(char* nomeArquivo) {
     FILE* arquivo;
