@@ -30,6 +30,7 @@ private:
     long tamanhoArquivoDestino;
     const int tamanhoVetorAscii;
     int* frequenciaCaracteres;
+    int* textoOriginal;
     std::string textoArquivoOrigem;
 public:
     Arquivo(char* nomeArquivo);
@@ -48,7 +49,13 @@ public:
         return arquivoOrigem;
     }
 
+    int* getTextoOriginal() const {
+        return textoOriginal;
+    }
 
+    long getTamanhoArquivoOrigem() const {
+        return tamanhoArquivoOrigem;
+    }
 };
 
 class Filtragem {
@@ -139,7 +146,7 @@ public:
 
 class Huffman {
 private:
-    int* quantidadeBits;
+    int quantidadeBits;
     filaprioridade arvoreCodificada;
     filaprioridade tabelaCodigoBinario;
     std::map <int, std::string> tabelaConversao;
@@ -152,7 +159,7 @@ public:
     Huffman();
     void encodeHuffman(filaprioridade fila);
     void decodeHuffman();
-    void imprimeTeste(std::string texto);
+    void imprimeTeste(int* texto, long tamanhoArquivo);
 
     Filtragem* getRoot() const {
         return root;
