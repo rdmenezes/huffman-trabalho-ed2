@@ -27,7 +27,7 @@ int* Arquivo::getFrequenciaCaracteres() const {
 }
 
 int* Arquivo::contaCaracteres() {
-    int i=0;
+    int i = 0;
     int caracterArquivo;
     //caracterArquivo = getc(arquivoOrigem);
     while (caracterArquivo != EOF) {
@@ -104,7 +104,7 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
 */
 }
 
-Huffman::Huffman() {
+Huffman::Huffman(long tam) {
     codigoBinario = "";
     textoArquivoDestino = "";
     quantidadeBits = 0;
@@ -164,31 +164,80 @@ void Huffman::criaCodigo(Filtragem* root, string bincode) {
 }
 
 void Huffman::imprimeTeste(int* texto, long tamanhoArquivo) {
-    int i;
+    int i, quantidadeCaracteres = 0;
     long tam = tamanhoArquivo;
+
     int* c = new int[tamanhoArquivo];
     c = texto;
     cout << endl << endl << endl;
     cout << "IMPRIMINDO CODE:" << endl;
-    cout << "tamanho do arquivo: "<< tam << endl;
-    for (it = tabelaConversao.begin(); it != tabelaConversao.end(); it++){
+    cout << "tamanho do arquivo: " << tam << endl;
+    for (it = tabelaConversao.begin(); it != tabelaConversao.end(); it++) {
         cout << (*it).first << " => " << (*it).second << " => " << (*it).second.length() << endl;
         quantidadeBits += (*it).second.length();
     }
+    quantidadeCaracteres = (int) tabelaConversao.size();
+    cout << quantidadeCaracteres << endl;
     cout << "soma dos bits: " << quantidadeBits << endl;
-    cout << "média bits: " << quantidadeBits << endl;
-    
+    cout << "média bits: " << quantidadeBits / quantidadeCaracteres << endl;
+
     for (i = 0; i < tam; i++) {
         //cout<< " "<<c[i];
         textoArquivoDestino += tabelaConversao.find(c[i])->second;
         //cout << tabelaConversao.find(c[i])->second;
         //cout << texto[i]; //(unsigned int)
     }
+    size_t const bitstam(textoArquivoDestino.length());
     //cout << textoArquivoDestino << endl;
     /*while (!tabelaCodigoBinario.empty()) {
         cout << *tabelaCodigoBinario.top() << endl; // Print highest priority string
         tabelaCodigoBinario.pop(); // Remmove highest priority string
     }*/
+}
+
+void Arquivo::gravaArquivoDestino(string texto) {
+    string leitura;
+    int i = 0, k = 0;
+    unsigned char teste[8];
+    leitura = texto;
+    cout << "tamanho texto: " << leitura.length() << endl;
+    cout << sizeof(leitura)<< endl;
+    cout << leitura << endl;
+    arquivoDestino = fopen("teste.huf", "wb");
+    boost::dynamic_bitset<> grava(texto);
+    if (arquivoDestino != NULL) {
+        while(i < leitura.length()) {
+            while(k < 8){
+                teste[k] = leitura[i];
+                i++;
+                k++;
+            }
+            k = 0;
+        fwrite(&teste, 1, 1, arquivoDestino);
+        teste[0] = '\0';
+         }
+        //leitura = fread(&texto, sizeof(texto), sizeof(texto), arquivoDestino);
+        fclose(arquivoDestino);
+    }
+    //cout << leitura << endl;
+}
+
+void Arquivo::leArquivoDestino() {
+    string leitura;
+    int i = 0, k = 0;
+    unsigned char teste[8];
+    arquivoCompactado = fopen("teste.huf", "rb");
+    if (arquivoCompactado != NULL) {
+        while(!feof(arquivoCompactado)){
+        fread(&teste, sizeof(teste), 1, arquivoDestino);
+        //leitura += teste;
+        printf ("%s", teste);
+        //teste = "0";
+         }
+        //leitura = fread(&texto, sizeof(texto), sizeof(texto), arquivoDestino);
+        fclose(arquivoDestino);
+    }
+    //cout << leitura << endl;
 }
 
 bool verificaArquivo(char* nomeArquivo) {

@@ -8,6 +8,7 @@
 #ifndef HUFFMAN_H
 #define	HUFFMAN_H
 
+#include <bitset>
 #include <cstdlib>
 #include <cstdio>
 #include <cctype>
@@ -21,22 +22,27 @@
 #include <queue>
 #include <map>
 #include <algorithm>
+#include <boost/dynamic_bitset.hpp>
+
 
 class Arquivo {
 private:
     FILE* arquivoOrigem;
     FILE* arquivoDestino;
+    FILE* arquivoCompactado;
     long tamanhoArquivoOrigem;
     long tamanhoArquivoDestino;
     const int tamanhoVetorAscii;
     int* frequenciaCaracteres;
     int* textoOriginal;
     std::string textoArquivoOrigem;
+    std::string arquivoDescompactado;
 public:
     Arquivo(char* nomeArquivo);
     int* contaCaracteres();
     void criaArquivoDestino(FILE* arquivoDestino);
-    int gravaArquivoDestino(FILE* arquivoDestino, int* tamanhoArquivoDestino);
+    void gravaArquivoDestino(std::string texto);
+    void leArquivoDestino();
     const int getTamanhoVetorAscii() const;
     int* getFrequenciaCaracteres() const;
 
@@ -156,7 +162,7 @@ private:
     std::string textoArquivoDestino;
 public:
     filaprioridade code;
-    Huffman();
+    Huffman(long tam);
     void encodeHuffman(filaprioridade fila);
     void decodeHuffman();
     void imprimeTeste(int* texto, long tamanhoArquivo);
@@ -186,16 +192,12 @@ public:
     }
     void criaCodigo(Filtragem* root, std::string bincode);
 
-    std::map<int, std::string>::iterator getIt() const {
-        return it;
+    std::string getTextoArquivoDestino() const {
+        return textoArquivoDestino;
     }
-
-    std::map<int, std::string> getTabelaConversao() const {
-        return tabelaConversao;
-    }
-
 
 };
+
 
 bool verificaArquivo(char* nomeArquivo);
 
