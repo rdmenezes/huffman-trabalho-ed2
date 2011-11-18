@@ -12,19 +12,16 @@ using namespace std;
 /*
  *
  */
-int main(int argc, char ** argv)
-{
+int main(int argc, char ** argv) {
     /* Verifica se os argumentos (argc e argv) foram digitados corretamente */
-    if ((argc < 3) || (argc > 4))
-    {
+    if ((argc < 3) || (argc > 4)) {
         cout << "Uso: huffman [opção] [arq_origem] [arq_destino]" << endl;
 
         return 1;
     }
 
     /* Verifica se existe arquivo de origem */
-    if (verificaArquivo(argv[2]))
-    {
+    if (verificaArquivo(argv[2])) {
         return 1;
     }
 
@@ -40,11 +37,13 @@ int main(int argc, char ** argv)
 
     estatistica -> filtraFrequencia(compactar -> getTamanhoVetorAscii(), compactar -> getFrequenciaCaracteres());
 
-    Huffman * codifica = new Huffman();
+    Huffman * codifica = new Huffman(compactar->getTamanhoArquivoOrigem());
 
     codifica -> encodeHuffman(estatistica -> getFrequenciaAscii());
     codifica -> criaCodigo(codifica -> getRoot(), codifica -> getCodigoBinario());
     codifica->imprimeTeste(compactar->getTextoOriginal(), compactar->getTamanhoArquivoOrigem());
+    compactar->gravaArquivoDestino(codifica->getTextoArquivoDestino());
+    compactar->leArquivoDestino();
 
     /* Testes com argc e argv */
     cout << endl;
@@ -52,8 +51,7 @@ int main(int argc, char ** argv)
 
     int i = argc;
 
-    while (argc-- > 0)
-    {
+    while (argc-- > 0) {
         cout << *argv++ << "[" << i - argc << "]" << endl;
     }
 
