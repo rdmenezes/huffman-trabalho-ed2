@@ -230,7 +230,7 @@ void Arquivo::gravaArquivoDestino(string texto) {
             fwrite(&b, 1, 1, arquivoDestino);
         }
     }
-    cout << endl << "tamanho de teste: " << teste.size() << endl;
+    //cout << endl << "tamanho de teste: " << teste.size() << endl;
     if (teste.size() != 0) {
         while (teste.size() < 8) {
             teste += "0";
