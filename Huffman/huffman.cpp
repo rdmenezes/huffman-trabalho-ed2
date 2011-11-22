@@ -5,6 +5,7 @@ using namespace std;
 Arquivo::Arquivo(char* nomeArquivo) : tamanhoVetorAscii(256) {
     frequenciaCaracteres = new int[tamanhoVetorAscii];
     textoArquivoOrigem = "";
+    quantidadeBitsets = 0;
     int i;
     for (i = 0; i < tamanhoVetorAscii; i++)
         frequenciaCaracteres[i] = 0;
@@ -197,43 +198,54 @@ void Huffman::imprimeTeste(int* texto, long tamanhoArquivo) {
 
 void Arquivo::gravaArquivoDestino(string texto) {
     string leitura;
+    const int size = 8;
+    //vector<bool> chico;
     int i = 0, k = 0;
-    unsigned char teste[8];
+    string teste;
+    teste = "";
     leitura = texto;
     cout << "tamanho texto: " << leitura.length() << endl;
-    cout << sizeof(leitura)<< endl;
     cout << leitura << endl;
-    arquivoDestino = fopen("teste.huf", "wb");
-    boost::dynamic_bitset<> grava(texto);
+    arquivoDestino = fopen("teste.huf", "wb+");
+    cout << "OI" << endl;
     if (arquivoDestino != NULL) {
-        while(i < leitura.length()) {
-            while(k < 8){
-                teste[k] = leitura[i];
-                i++;
-                k++;
+        while (i < leitura.length()) {
+            teste += leitura[i++];
+            if (i % 8 == 0) {
+                bitset<size> byte_out (teste);
+                fwrite(&byte_out, sizeof(byte_out), 1, arquivoDestino);
+                quantidadeBitsets++;
+                cout << byte_out.to_string() << byte_out.size();
+                teste = "";
             }
-            k = 0;
-        fwrite(&teste, 1, 1, arquivoDestino);
-        teste[0] = '\0';
-         }
-        //leitura = fread(&texto, sizeof(texto), sizeof(texto), arquivoDestino);
-        fclose(arquivoDestino);
+        }
+        bitset<8> byte_out (teste);
+        fwrite(&byte_out, sizeof(byte_out), 1, arquivoDestino);
+        quantidadeBitsets++;
+        //quantidadeBitsets++;
+        //cout << "bitset::" << outbit << "-";
+        //fwrite(&chico, sizeof (chico.size()), 1, arquivoDestino);
+        //teste = "";
     }
-    //cout << leitura << endl;
+    fclose(arquivoDestino);
 }
+//cout << endl << "x = " << quantidadeBitsets << endl;
+
+//}
 
 void Arquivo::leArquivoDestino() {
     string leitura;
     int i = 0, k = 0;
-    unsigned char teste[8];
+    cout << "lendo...." << endl;
+    bitset<8> teste;
     arquivoCompactado = fopen("teste.huf", "rb");
     if (arquivoCompactado != NULL) {
-        while(!feof(arquivoCompactado)){
-        fread(&teste, sizeof(teste), 1, arquivoDestino);
-        //leitura += teste;
-        printf ("%s", teste);
-        //teste = "0";
-         }
+        while (!feof(arquivoCompactado)) {
+            fread(&teste, sizeof (teste), quantidadeBitsets, arquivoDestino);
+            //leitura += teste;
+            cout << teste;
+            //teste = "0";
+        }
         //leitura = fread(&texto, sizeof(texto), sizeof(texto), arquivoDestino);
         fclose(arquivoDestino);
     }
