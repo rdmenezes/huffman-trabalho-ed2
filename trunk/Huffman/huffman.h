@@ -30,6 +30,8 @@ private:
     FILE* arquivoOrigem;
     FILE* arquivoDestino;
     FILE* arquivoCompactado;
+    std::bitset<8> outbit;
+    int quantidadeBitsets; 
     long tamanhoArquivoOrigem;
     long tamanhoArquivoDestino;
     const int tamanhoVetorAscii;
