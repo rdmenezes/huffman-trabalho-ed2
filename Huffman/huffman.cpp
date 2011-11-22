@@ -196,61 +196,83 @@ void Huffman::imprimeTeste(int* texto, long tamanhoArquivo) {
     }*/
 }
 
-void Arquivo::gravaArquivoDestino(string texto) {
-    string leitura;
-    const int size = 8;
-    //vector<bool> chico;
-    int i = 0, k = 0;
-    string teste;
-    teste = "";
-    leitura = texto;
-    cout << "tamanho texto: " << leitura.length() << endl;
-    cout << leitura << endl;
-    arquivoDestino = fopen("teste.huf", "wb+");
-    cout << "OI" << endl;
-    if (arquivoDestino != NULL) {
-        while (i < leitura.length()) {
-            teste += leitura[i++];
-            if (i % 8 == 0) {
-                bitset<size> byte_out (teste);
-                fwrite(&byte_out, sizeof(byte_out), 1, arquivoDestino);
-                quantidadeBitsets++;
-                cout << byte_out.to_string() << byte_out.size();
-                teste = "";
-            }
-        }
-        bitset<8> byte_out (teste);
-        fwrite(&byte_out, sizeof(byte_out), 1, arquivoDestino);
-        quantidadeBitsets++;
-        //quantidadeBitsets++;
-        //cout << "bitset::" << outbit << "-";
-        //fwrite(&chico, sizeof (chico.size()), 1, arquivoDestino);
-        //teste = "";
-    }
-    fclose(arquivoDestino);
-}
-//cout << endl << "x = " << quantidadeBitsets << endl;
-
+//void Arquivo::gravaArquivoDestino(string texto) {
+//    string leitura;
+//    vector<bool> chico;
+//    int i = 0, k = 0;
+//    leitura = texto;
+//    cout << "tamanho texto: " << leitura.length() << endl;
+//    //cout << leitura << endl;
+//    arquivoDestino = fopen("teste.huf", "wb+");
+//    cout << "OI" << endl;
+//    if (arquivoDestino != NULL) {
+//        while (i < leitura.length())
+//            chico.push_back(leitura[i++]);
+//
+//        fwrite(&chico, 1, 1, arquivoDestino);
+//    }
+//    fclose(arquivoDestino);
 //}
 
-void Arquivo::leArquivoDestino() {
-    string leitura;
-    int i = 0, k = 0;
-    cout << "lendo...." << endl;
-    bitset<8> teste;
-    arquivoCompactado = fopen("teste.huf", "rb");
-    if (arquivoCompactado != NULL) {
-        while (!feof(arquivoCompactado)) {
-            fread(&teste, sizeof (teste), quantidadeBitsets, arquivoDestino);
-            //leitura += teste;
-            cout << teste;
-            //teste = "0";
+void Arquivo::gravaArquivoDestino(string texto) {
+    const int size = 8;
+    string teste = "";
+    cout << "quantidade de caracteres: " << texto.size() << endl;
+    cout << endl << texto << endl;
+    arquivoDestino = fopen("teste.huf", "wb+");
+    unsigned int i = 0;
+    while (i < texto.size()) {
+        teste += texto[i++];
+        if (i % 8 == 0) {
+            bitset <size> b(teste);
+            cout << b;
+            teste = "";
+            fwrite(&b, 1, 1, arquivoDestino);
         }
-        //leitura = fread(&texto, sizeof(texto), sizeof(texto), arquivoDestino);
-        fclose(arquivoDestino);
     }
-    //cout << leitura << endl;
+    cout << endl << "tamanho de teste: " << teste.size() << endl;
+    if (teste.size() != 0) {
+        while (teste.size() < 8) {
+            teste += "0";
+        }
+
+        bitset <size> b(teste);
+        cout << b << endl;
+        fwrite(&b, 1, 1, arquivoDestino);
+    }
+    fclose(arquivoDestino);
+    cout << endl << endl;
 }
+
+void Arquivo::leArquivoDestino() {
+    const int size = 8;
+    bitset <size> c;
+    arquivoCompactado = fopen("teste.huf", "rb");
+    while (!feof(arquivoCompactado)) {
+        fread(&c, 1, 1, arquivoCompactado);
+        cout << c.to_string();
+    }
+    fclose(arquivoCompactado);
+    cout << endl << endl;
+}
+//void Arquivo::leArquivoDestino() {
+//    string leitura;
+//    int i = 0, k = 0;
+//    cout << "lendo...." << endl;
+//    bitset<8> teste;
+//    arquivoCompactado = fopen("teste.huf", "rb");
+//    if (arquivoCompactado != NULL) {
+//        while (!feof(arquivoCompactado)) {
+//            fread(&teste, sizeof (teste), quantidadeBitsets, arquivoDestino);
+//            //leitura += teste;
+//            cout << teste;
+//            //teste = "0";
+//        }
+//        //leitura = fread(&texto, sizeof(texto), sizeof(texto), arquivoDestino);
+//        fclose(arquivoDestino);
+//    }
+//    //cout << leitura << endl;
+//}
 
 bool verificaArquivo(char* nomeArquivo) {
     FILE* arquivo;
