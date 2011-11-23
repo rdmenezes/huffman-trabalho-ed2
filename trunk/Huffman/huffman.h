@@ -43,8 +43,8 @@ public:
     Arquivo(char* nomeArquivo);
     int* contaCaracteres();
     void criaArquivoDestino(FILE* arquivoDestino);
-    void gravaArquivoDestino(std::string texto);
-    void leArquivoDestino();
+    void gravaArquivoDestino(std::string texto, char* nomeArquivo);
+    void leArquivoDestino(char* nomeArquivo);
     const int getTamanhoVetorAscii() const;
     int* getFrequenciaCaracteres() const;
 
