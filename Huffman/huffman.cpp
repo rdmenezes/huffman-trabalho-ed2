@@ -214,12 +214,12 @@ void Huffman::imprimeTeste(int* texto, long tamanhoArquivo) {
 //    fclose(arquivoDestino);
 //}
 
-void Arquivo::gravaArquivoDestino(string texto) {
+void Arquivo::gravaArquivoDestino(string texto, char* nomeArquivo) {
     const int size = 8;
     string teste = "";
     cout << "quantidade de caracteres: " << texto.size() << endl;
     cout << endl << texto << endl;
-    arquivoDestino = fopen("teste.huf", "wb+");
+    arquivoDestino = fopen(nomeArquivo, "wb+");
     unsigned int i = 0;
     while (i < texto.size()) {
         teste += texto[i++];
@@ -244,16 +244,16 @@ void Arquivo::gravaArquivoDestino(string texto) {
     cout << endl << endl;
 }
 
-void Arquivo::leArquivoDestino() {
+void Arquivo::leArquivoDestino(char* nomeArquivo) {
     const int size = 8;
     bitset <size> c;
-    arquivoCompactado = fopen("teste.huf", "rb");
+    arquivoCompactado = fopen(nomeArquivo, "rb");
     while (!feof(arquivoCompactado)) {
         fread(&c, 1, 1, arquivoCompactado);
-        cout << c.to_string();
+        arquivoDescompactado += c.to_string();
     }
     fclose(arquivoCompactado);
-    cout << endl << endl;
+    cout << arquivoDescompactado.size() << endl << endl;
 }
 //void Arquivo::leArquivoDestino() {
 //    string leitura;

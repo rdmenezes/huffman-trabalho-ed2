@@ -29,7 +29,20 @@ int main(int argc, char ** argv) {
     Arquivo * compactar;
 
     compactar = new Arquivo(argv[2]);
-
+    int k = 0;
+    char* fileName = argv[2];
+    while (fileName[k]!='\0'){
+        k++;
+        if(fileName[k]=='.'){
+            fileName[++k]='h';
+            fileName[++k]='u';
+            fileName[++k]='f';
+            fileName[++k]='\0';
+        }
+    }
+//    char extension[] = ".huf";
+//    strcat(fileName, extension);
+    cout << fileName << endl;
     /* Conta caracteres do arquivo */
     compactar -> contaCaracteres();
 
@@ -42,8 +55,8 @@ int main(int argc, char ** argv) {
     codifica -> encodeHuffman(estatistica -> getFrequenciaAscii());
     codifica -> criaCodigo(codifica -> getRoot(), codifica -> getCodigoBinario());
     codifica->imprimeTeste(compactar->getTextoOriginal(), compactar->getTamanhoArquivoOrigem());
-    compactar->gravaArquivoDestino(codifica->getTextoArquivoDestino());
-    compactar->leArquivoDestino();
+    compactar->gravaArquivoDestino(codifica->getTextoArquivoDestino(), fileName);
+    compactar->leArquivoDestino(fileName);
 
     /* Testes com argc e argv */
     cout << endl;
