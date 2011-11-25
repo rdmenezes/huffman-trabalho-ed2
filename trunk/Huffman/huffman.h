@@ -37,6 +37,7 @@ private:
     const int tamanhoVetorAscii;
     int* frequenciaCaracteres;
     int* textoOriginal;
+    int tamanhoCaracteresBinarios;
     std::string textoArquivoOrigem;
     std::string arquivoDescompactado;
 public:
