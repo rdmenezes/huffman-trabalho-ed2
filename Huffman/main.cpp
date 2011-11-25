@@ -67,7 +67,9 @@ int main(int argc, char ** argv) {
     while (argc-- > 0) {
         cout << *argv++ << "[" << i - argc << "]" << endl;
     }
-
+    delete codifica;
+    delete compactar;
+    delete estatistica;
     return 0;
 }
 

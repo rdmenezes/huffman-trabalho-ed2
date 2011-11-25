@@ -217,15 +217,22 @@ void Huffman::imprimeTeste(int* texto, long tamanhoArquivo) {
 void Arquivo::gravaArquivoDestino(string texto, char* nomeArquivo) {
     const int size = 8;
     string teste = "";
+    int k, j;
+    tamanhoCaracteresBinarios = texto.size();
     cout << "quantidade de caracteres: " << texto.size() << endl;
     cout << endl << texto << endl;
+    for (k = 0; k < tamanhoVetorAscii; k++)
+        cout << frequenciaCaracteres[k];
     arquivoDestino = fopen(nomeArquivo, "wb+");
+    fwrite(&tamanhoCaracteresBinarios, sizeof (int), 1, arquivoDestino);
+    fwrite(&frequenciaCaracteres, sizeof (int), sizeof (frequenciaCaracteres), arquivoDestino);
+    cout << endl;
     unsigned int i = 0;
     while (i < texto.size()) {
         teste += texto[i++];
         if (i % 8 == 0) {
             bitset <size> b(teste);
-            cout << b;
+            //cout << b;
             teste = "";
             fwrite(&b, 1, 1, arquivoDestino);
         }
@@ -237,7 +244,7 @@ void Arquivo::gravaArquivoDestino(string texto, char* nomeArquivo) {
         }
 
         bitset <size> b(teste);
-        cout << b << endl;
+        //cout << b << endl;
         fwrite(&b, 1, 1, arquivoDestino);
     }
     fclose(arquivoDestino);
@@ -247,13 +254,22 @@ void Arquivo::gravaArquivoDestino(string texto, char* nomeArquivo) {
 void Arquivo::leArquivoDestino(char* nomeArquivo) {
     const int size = 8;
     bitset <size> c;
+    int k, j = 0;
     arquivoCompactado = fopen(nomeArquivo, "rb");
+    //for (k = 0; k < tamanhoVetorAscii; k++)
+    fread(&tamanhoCaracteresBinarios, sizeof (int), 1, arquivoDestino);
+    cout << fread(&frequenciaCaracteres, sizeof (int), sizeof (frequenciaCaracteres), arquivoDestino);
+    //    for (k = 0; k < tamanhoVetorAscii; k++)
+    //        cout << k << "--->" << "[" << frequenciaCaracteres[k] << "]" << endl;
+    cout << "tamanhoCaracteresCompactados: " << tamanhoCaracteresBinarios << endl;
+    while (k++ < tamanhoVetorAscii)
+        cout << frequenciaCaracteres[k];
     while (!feof(arquivoCompactado)) {
         fread(&c, 1, 1, arquivoCompactado);
         arquivoDescompactado += c.to_string();
     }
     fclose(arquivoCompactado);
-    cout << arquivoDescompactado.size() << endl << endl;
+    //cout << arquivoDescompactado << endl << endl;
 }
 //void Arquivo::leArquivoDestino() {
 //    string leitura;
