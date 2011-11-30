@@ -65,6 +65,11 @@ public:
     long getTamanhoArquivoOrigem() const {
         return tamanhoArquivoOrigem;
     }
+
+    std::string getArquivoDescompactado() const {
+        return arquivoDescompactado;
+    }
+
 };
 
 class Filtragem {
@@ -156,6 +161,7 @@ public:
 class Huffman {
 private:
     int quantidadeBits;
+    int stringSize;
     filaprioridade arvoreCodificada;
     filaprioridade tabelaCodigoBinario;
     std::map <int, std::string> tabelaConversao;
@@ -167,7 +173,7 @@ public:
     filaprioridade code;
     Huffman(long tam);
     void encodeHuffman(filaprioridade fila);
-    void decodeHuffman();
+    void decodeHuffman(Filtragem* root, std::string texto);
     void imprimeTeste(int* texto, long tamanhoArquivo);
 
     Filtragem* getRoot() const {
