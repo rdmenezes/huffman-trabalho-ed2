@@ -109,6 +109,7 @@ Huffman::Huffman(long tam) {
     codigoBinario = "";
     textoArquivoDestino = "";
     quantidadeBits = 0;
+    stringSize = 0;
 }
 
 void Huffman::encodeHuffman(filaprioridade fila) {
@@ -160,6 +161,30 @@ void Huffman::criaCodigo(Filtragem* root, string bincode) {
             //cout << *(root) << endl;
             tabelaCodigoBinario.push(root);
             //cout << *tabelaCodigoBinario.top() << endl;
+        }
+    }
+}
+
+void Huffman::decodeHuffman(Filtragem* root, string texto) {
+    if (root != NULL) {
+        if (texto[stringSize] < texto.size()) {
+            if (texto[stringSize] == '0'){
+               criaCodigo(root->getEsq(), texto);
+               stringSize++;
+            }
+            if (texto[stringSize] == '1'){
+               criaCodigo(root->getDir(), texto);
+               stringSize++;
+            }
+            if (root->isLeaf()) {
+                textoArquivoDestino += (char)root->caracterAscii;
+                stringSize++;
+                //root->setCodigobinario(bincode);
+                //tabelaConversao[root->getCaracterAscii()] = root->getCodigobinario();
+                //cout << *(root) << endl;
+                //tabelaCodigoBinario.push(root);
+                //cout << *tabelaCodigoBinario.top() << endl;
+            }
         }
     }
 }
@@ -255,12 +280,13 @@ void Arquivo::leArquivoDestino(char* nomeArquivo) {
     const int size = 8;
     bitset <size> c;
     int k, j = 0;
-    arquivoCompactado = fopen(nomeArquivo, "rb");
+    arquivoCompactado = fopen(nomeArquivo, "rb+");
     //for (k = 0; k < tamanhoVetorAscii; k++)
-    fread(&tamanhoCaracteresBinarios, sizeof (int), 1, arquivoDestino);
-    cout << fread(&frequenciaCaracteres, sizeof (int), sizeof (frequenciaCaracteres), arquivoDestino);
-    //    for (k = 0; k < tamanhoVetorAscii; k++)
-    //        cout << k << "--->" << "[" << frequenciaCaracteres[k] << "]" << endl;
+    fread(&tamanhoCaracteresBinarios, sizeof (int), 1, arquivoCompactado);
+    fread(&frequenciaCaracteres, sizeof (int), sizeof(frequenciaCaracteres), arquivoCompactado);
+        for (k = 0; k < tamanhoVetorAscii; k++)
+            cout << k << "--->" << "[" << frequenciaCaracteres[k] << "]" << '\t';
+    cout << endl;
     cout << "tamanhoCaracteresCompactados: " << tamanhoCaracteresBinarios << endl;
     while (k++ < tamanhoVetorAscii)
         cout << frequenciaCaracteres[k];
@@ -269,7 +295,8 @@ void Arquivo::leArquivoDestino(char* nomeArquivo) {
         arquivoDescompactado += c.to_string();
     }
     fclose(arquivoCompactado);
-    //cout << arquivoDescompactado << endl << endl;
+    arquivoDescompactado.resize(tamanhoCaracteresBinarios);
+    cout << endl << arquivoDescompactado << endl << endl;
 }
 //void Arquivo::leArquivoDestino() {
 //    string leitura;
