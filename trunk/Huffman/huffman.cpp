@@ -68,7 +68,7 @@ std::ostream & operator <<(std::ostream &os, const Filtragem & p) {
 }
 
 bool Filtragem::operator<(const Filtragem &A) const {
-    if (frequenciaCaracterAscii < A.frequenciaCaracterAscii || caracterAscii < A.caracterAscii)
+    if (frequenciaCaracterAscii < A.frequenciaCaracterAscii && caracterAscii < A.caracterAscii)
         return true;
     return false;
 }
@@ -92,7 +92,7 @@ void Estatistica::filtraFrequencia(int tamanhoVetor,
             contagem->caracterAscii = i;
             contagem->frequenciaCaracterAscii = vetorFrequenciaCaracteres[i];
             contagem->leaf = true;
-            cout << (*contagem) << endl;
+            //cout << (*contagem) << endl;
             frequenciaAscii.push(contagem);
         }
     }/*
@@ -168,24 +168,12 @@ void Huffman::criaCodigo(Filtragem* root, string bincode) {
 
 void Huffman::decodeHuffman(Filtragem* root, string texto) {
     if (root != NULL) {
-        if (texto[stringSize] == '0') {
-            //retorna = true;
-            stringSize++;
-            decodeHuffman(root->getEsq(), texto);
-
-        }
-        if (texto[stringSize] == '1') {
-            //retorna = true;
-            stringSize++;
-            decodeHuffman(root->getDir(), texto);
-
-        }
         if (root->isLeaf()) {
             //putchar (root->getCaracterAscii());
             textoArquivoDestino += root->getCaracterAscii();
             //return root->getCaracterAscii();
-            
-            stringSize++;
+
+            //stringSize++;
             //retorna = false;
             //root->setCodigobinario(bincode);
             //tabelaConversao[root->getCaracterAscii()] = root->getCodigobinario();
@@ -193,6 +181,18 @@ void Huffman::decodeHuffman(Filtragem* root, string texto) {
             //tabelaCodigoBinario.push(root);
             //cout << *tabelaCodigoBinario.top() << endl;
             //decodeHuffman(roo, texto);
+        }
+        else if (texto[stringSize] == '0') {
+            //retorna = true;
+            stringSize++;
+            decodeHuffman(root->getEsq(), texto);
+
+        }
+        else if (texto[stringSize] == '1') {
+            //retorna = true;
+            stringSize++;
+            decodeHuffman(root->getDir(), texto);
+
         }
 
     }
@@ -256,7 +256,7 @@ void Arquivo::gravaArquivoDestino(string texto, char* nomeArquivo) {
     int k, j;
     tamanhoCaracteresBinarios = texto.size();
     cout << "quantidade de caracteres: " << texto.size() << endl;
-    //cout << endl << texto << endl;
+    cout << endl << texto << endl;
     for (k = 0; k < tamanhoVetorAscii; k++)
         cout << frequenciaCaracteres[k];
     arquivoDestino = fopen(nomeArquivo, "wb+");
