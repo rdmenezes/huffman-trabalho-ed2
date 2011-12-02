@@ -145,7 +145,7 @@ public:
         else return (lhs->getFrequenciaCaracterAscii() > rhs->getFrequenciaCaracterAscii());
     }
 };
-typedef std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara > filaprioridade;
+typedef std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara> filaprioridade;
 
 class Estatistica {
 private:
