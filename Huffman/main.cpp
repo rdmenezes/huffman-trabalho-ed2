@@ -24,7 +24,7 @@ int main(int argc, char ** argv) {
     if (verificaArquivo(argv[2])) {
         return 1;
     }
-    if (strcmp(argv[1], "-c")==0) {
+    if (strcmp(argv[1], "-c") == 0) {
         /* Instancia o objeto a compactar */
         Arquivo * compactar;
 
@@ -56,34 +56,34 @@ int main(int argc, char ** argv) {
         codifica->imprimeTeste(compactar->getTextoOriginal(), compactar->getTamanhoArquivoOrigem());
         compactar->gravaArquivoDestino(codifica->getTextoArquivoDestino(), fileName);
         compactar->leArquivoDestino(fileName);
-    }
-    else if (strcmp(argv[1], "-d") == 0) {
+    } else if (strcmp(argv[1], "-d") == 0) {
         Arquivo * descompactar;
         int k = 0;
         descompactar = new Arquivo(argv[2]);
         char* fileName = argv[2];
-//        while (fileName[k] != '\0') {
-//            k++;
-//            if (fileName[k] == '.') {
-//                fileName[++k] = 't';
-//                fileName[++k] = 'x';
-//                fileName[++k] = 't';
-//                fileName[++k] = '\0';
-//            }
-//        }
-        
+        //        while (fileName[k] != '\0') {
+        //            k++;
+        //            if (fileName[k] == '.') {
+        //                fileName[++k] = 't';
+        //                fileName[++k] = 'x';
+        //                fileName[++k] = 't';
+        //                fileName[++k] = '\0';
+        //            }
+        //        }
+
         descompactar->leArquivoDestino(fileName);
         /*Cria objeto para a classe Estatistica e retira as frequencias de valor 0 da lista
          * de frequencia */
         Estatistica * estatistica = new Estatistica();
         estatistica -> filtraFrequencia(descompactar -> getTamanhoVetorAscii(), descompactar -> getFrequenciaCaracteres());
-        
+
         Huffman * decodifica = new Huffman(descompactar->getTamanhoArquivoOrigem());
         decodifica -> encodeHuffman(estatistica -> getFrequenciaAscii());
         decodifica -> criaCodigo(decodifica -> getRoot(), decodifica -> getCodigoBinario());
-        decodifica -> decodeHuffman(decodifica -> getRoot(), descompactar -> getArquivoDescompactado());
+        while (decodifica->getStringSize() < descompactar->getTamanhoCaracteresBinarios())
+            decodifica -> decodeHuffman(decodifica -> getRoot(), descompactar -> getArquivoDescompactado());
         cout << decodifica -> getTextoArquivoDestino() << endl;
-    }else{
+    } else {
         cout << "Uso: huffman [opção] [arq_origem] [arq_destino]" << endl;
         cout << "[opção] = -c para compactar" << endl;
         cout << "[opção] = -d para descompactar" << endl;

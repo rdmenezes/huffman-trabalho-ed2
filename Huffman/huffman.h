@@ -22,7 +22,6 @@
 #include <queue>
 #include <map>
 #include <algorithm>
-#include <boost/dynamic_bitset.hpp>
 
 
 class Arquivo {
@@ -69,6 +68,11 @@ public:
     std::string getArquivoDescompactado() const {
         return arquivoDescompactado;
     }
+
+    int getTamanhoCaracteresBinarios() const {
+        return tamanhoCaracteresBinarios;
+    }
+
 
 };
 
@@ -167,6 +171,7 @@ private:
     std::map <int, std::string> tabelaConversao;
     std::map <int, std::string>::iterator it;
     Filtragem* root;
+    bool retorna;
     std::string codigoBinario;
     std::string textoArquivoDestino;
 public:
@@ -204,6 +209,11 @@ public:
     std::string getTextoArquivoDestino() const {
         return textoArquivoDestino;
     }
+
+    int getStringSize() const {
+        return stringSize;
+    }
+
 
 };
 
