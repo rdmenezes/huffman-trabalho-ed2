@@ -110,6 +110,7 @@ Huffman::Huffman(long tam) {
     textoArquivoDestino = "";
     quantidadeBits = 0;
     stringSize = 0;
+    retorna = false;
 }
 
 void Huffman::encodeHuffman(filaprioridade fila) {
@@ -167,26 +168,36 @@ void Huffman::criaCodigo(Filtragem* root, string bincode) {
 
 void Huffman::decodeHuffman(Filtragem* root, string texto) {
     if (root != NULL) {
-        if (texto[stringSize] < texto.size()) {
-            if (texto[stringSize] == '0'){
-               criaCodigo(root->getEsq(), texto);
-               stringSize++;
-            }
-            if (texto[stringSize] == '1'){
-               criaCodigo(root->getDir(), texto);
-               stringSize++;
-            }
-            if (root->isLeaf()) {
-                textoArquivoDestino += (char)root->caracterAscii;
-                stringSize++;
-                //root->setCodigobinario(bincode);
-                //tabelaConversao[root->getCaracterAscii()] = root->getCodigobinario();
-                //cout << *(root) << endl;
-                //tabelaCodigoBinario.push(root);
-                //cout << *tabelaCodigoBinario.top() << endl;
-            }
+        if (texto[stringSize] == '0') {
+            //retorna = true;
+            stringSize++;
+            decodeHuffman(root->getEsq(), texto);
+
         }
+        if (texto[stringSize] == '1') {
+            //retorna = true;
+            stringSize++;
+            decodeHuffman(root->getDir(), texto);
+
+        }
+        if (root->isLeaf()) {
+            //putchar (root->getCaracterAscii());
+            textoArquivoDestino += root->getCaracterAscii();
+            //return root->getCaracterAscii();
+            
+            stringSize++;
+            //retorna = false;
+            //root->setCodigobinario(bincode);
+            //tabelaConversao[root->getCaracterAscii()] = root->getCodigobinario();
+            //cout << *(root) << endl;
+            //tabelaCodigoBinario.push(root);
+            //cout << *tabelaCodigoBinario.top() << endl;
+            //decodeHuffman(roo, texto);
+        }
+
     }
+
+
 }
 
 void Huffman::imprimeTeste(int* texto, long tamanhoArquivo) {
@@ -245,12 +256,12 @@ void Arquivo::gravaArquivoDestino(string texto, char* nomeArquivo) {
     int k, j;
     tamanhoCaracteresBinarios = texto.size();
     cout << "quantidade de caracteres: " << texto.size() << endl;
-    cout << endl << texto << endl;
+    //cout << endl << texto << endl;
     for (k = 0; k < tamanhoVetorAscii; k++)
         cout << frequenciaCaracteres[k];
     arquivoDestino = fopen(nomeArquivo, "wb+");
     fwrite(&tamanhoCaracteresBinarios, sizeof (int), 1, arquivoDestino);
-    fwrite(&frequenciaCaracteres, sizeof (int), sizeof (frequenciaCaracteres), arquivoDestino);
+    fwrite(frequenciaCaracteres, sizeof (int), tamanhoVetorAscii, arquivoDestino);
     cout << endl;
     unsigned int i = 0;
     while (i < texto.size()) {
@@ -280,12 +291,12 @@ void Arquivo::leArquivoDestino(char* nomeArquivo) {
     const int size = 8;
     bitset <size> c;
     int k, j = 0;
-    arquivoCompactado = fopen(nomeArquivo, "rb+");
+    arquivoCompactado = fopen(nomeArquivo, "rb");
     //for (k = 0; k < tamanhoVetorAscii; k++)
     fread(&tamanhoCaracteresBinarios, sizeof (int), 1, arquivoCompactado);
-    fread(&frequenciaCaracteres, sizeof (int), sizeof(frequenciaCaracteres), arquivoCompactado);
-        for (k = 0; k < tamanhoVetorAscii; k++)
-            cout << k << "--->" << "[" << frequenciaCaracteres[k] << "]" << '\t';
+    fread(frequenciaCaracteres, sizeof (int), tamanhoVetorAscii, arquivoCompactado);
+    for (k = 0; k < tamanhoVetorAscii; k++)
+        cout << k << "--->" << "[" << frequenciaCaracteres[k] << "]" << '\t';
     cout << endl;
     cout << "tamanhoCaracteresCompactados: " << tamanhoCaracteresBinarios << endl;
     while (k++ < tamanhoVetorAscii)
@@ -296,7 +307,7 @@ void Arquivo::leArquivoDestino(char* nomeArquivo) {
     }
     fclose(arquivoCompactado);
     arquivoDescompactado.resize(tamanhoCaracteresBinarios);
-    cout << endl << arquivoDescompactado << endl << endl;
+    //cout << endl << arquivoDescompactado << endl << endl;
 }
 //void Arquivo::leArquivoDestino() {
 //    string leitura;
