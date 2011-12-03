@@ -31,15 +31,7 @@ int main(int argc, char ** argv) {
         compactar = new Arquivo(argv[2]);
         int k = 0;
         char* fileName = argv[2];
-        while (fileName[k] != '\0') {
-            k++;
-            if (fileName[k] == '.') {
-                fileName[++k] = 'h';
-                fileName[++k] = 'u';
-                fileName[++k] = 'f';
-                fileName[++k] = '\0';
-            }
-        }
+
         //    char extension[] = ".huf";
         //    strcat(fileName, extension);
         cout << fileName << endl;
@@ -54,6 +46,19 @@ int main(int argc, char ** argv) {
         codifica -> encodeHuffman(estatistica -> getFrequenciaAscii());
         codifica -> criaCodigo(codifica -> getRoot(), codifica -> getCodigoBinario());
         codifica->imprimeTeste(compactar->getTextoOriginal(), compactar->getTamanhoArquivoOrigem());
+        if (argc == 3) {
+            while (fileName[k] != '\0') {
+                k++;
+                if (fileName[k] == '.') {
+                    fileName[++k] = 'h';
+                    fileName[++k] = 'u';
+                    fileName[++k] = 'f';
+                    fileName[++k] = '\0';
+                }
+            }
+        } else if (argc == 4) {
+            fileName = argv[3];
+        }
         compactar->gravaArquivoDestino(codifica->getTextoArquivoDestino(), fileName);
         compactar->leArquivoDestino(fileName);
     } else if (strcmp(argv[1], "-d") == 0) {
@@ -74,14 +79,18 @@ int main(int argc, char ** argv) {
         decodifica -> criaCodigo(decodifica -> getRoot(), decodifica -> getCodigoBinario());
         while (decodifica->getStringSize() < descompactar->getTamanhoCaracteresBinarios())
             decodifica -> decodeHuffman(decodifica -> getRoot(), descompactar -> getArquivoDescompactado());
-        while (fileName[k] != '\0') {
-            k++;
-            if (fileName[k] == '.') {
-                fileName[++k] = 't';
-                fileName[++k] = 'x';
-                fileName[++k] = 't';
-                fileName[++k] = '\0';
+        if (argc == 3) {
+            while (fileName[k] != '\0') {
+                k++;
+                if (fileName[k] == '.') {
+                    fileName[++k] = 't';
+                    fileName[++k] = 'x';
+                    fileName[++k] = 't';
+                    fileName[++k] = '\0';
+                }
             }
+        } else if (argc == 4) {
+            fileName = argv[3];
         }
         descompactar->gravaArquivoTxt(decodifica->getTextoArquivoDestino(), fileName);
         //cout << decodifica -> getTextoArquivoDestino() << endl;
