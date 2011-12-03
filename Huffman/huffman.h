@@ -9,6 +9,7 @@
 #define	HUFFMAN_H
 
 #include <bitset>
+#include <sys/time.h>
 #include <cstdlib>
 #include <cstdio>
 #include <cctype>
@@ -74,7 +75,9 @@ public:
         return tamanhoCaracteresBinarios;
     }
 
-
+    long getTamanhoArquivoDestino() const {
+        return tamanhoArquivoDestino;
+    }
 };
 
 class Filtragem {
@@ -151,7 +154,6 @@ typedef std::priority_queue<Filtragem*, std::vector<Filtragem*>, compara> filapr
 class Estatistica {
 private:
     int taxaCompactacao;
-    int mediaBits;
     int tempoConsumido;
     filaprioridade frequenciaAscii;
 
@@ -167,12 +169,12 @@ class Huffman {
 private:
     int quantidadeBits;
     int stringSize;
+    float mediaBits;
     filaprioridade arvoreCodificada;
     filaprioridade tabelaCodigoBinario;
     std::map <int, std::string> tabelaConversao;
     std::map <int, std::string>::iterator it;
     Filtragem* root;
-    bool retorna;
     std::string codigoBinario;
     std::string textoArquivoDestino;
 public:
@@ -214,6 +216,11 @@ public:
     int getStringSize() const {
         return stringSize;
     }
+
+    float getMediaBits() const {
+        return mediaBits;
+    }
+
 
 
 };

@@ -13,6 +13,9 @@ using namespace std;
  *
  */
 int main(int argc, char ** argv) {
+    /*Estruturas utilizadas para contar o tempo de execução do programa*/
+    struct timeval inicio;
+    struct timeval fim;
     /* Verifica se os argumentos (argc e argv) foram digitados corretamente */
     if ((argc < 3) || (argc > 4)) {
         cout << "Uso: huffman [opção] [arq_origem] [arq_destino]" << endl;
@@ -24,6 +27,7 @@ int main(int argc, char ** argv) {
     if (verificaArquivo(argv[2])) {
         return 1;
     }
+    gettimeofday(&inicio, NULL);
     if (strcmp(argv[1], "-c") == 0) {
         /* Instancia o objeto a compactar */
         Arquivo * compactar;
@@ -32,9 +36,6 @@ int main(int argc, char ** argv) {
         int k = 0;
         char* fileName = argv[2];
 
-        //    char extension[] = ".huf";
-        //    strcat(fileName, extension);
-        cout << fileName << endl;
         /* Conta caracteres do arquivo */
         compactar -> contaCaracteres();
         /*Cria objeto para a classe Estatistica e retira as frequencias de valor 0 da lista
@@ -60,8 +61,21 @@ int main(int argc, char ** argv) {
             fileName = argv[3];
         }
         compactar->gravaArquivoDestino(codifica->getTextoArquivoDestino(), fileName);
-        compactar->leArquivoDestino(fileName);
-    } else if (strcmp(argv[1], "-d") == 0) {
+        gettimeofday(&fim, NULL);
+        // Calculando tempo de execução em microsegundos
+        double tI = inicio.tv_sec*1000000 + (inicio.tv_usec);
+        double tF = fim.tv_sec*1000000  + (fim.tv_usec);
+        int comp = ((float)compactar -> getTamanhoArquivoDestino()/(float)compactar -> getTamanhoArquivoOrigem())*100;
+        //Informações mostradas ao usuário
+        cout << "Arquivo compactado........... : " << fileName << endl;
+        cout << "Tamanho do arquivo original.. : " << compactar -> getTamanhoArquivoOrigem() << " bytes" << endl;
+        cout << "Tamanho do arquivo compactado : " << compactar -> getTamanhoArquivoDestino() << " bytes" << endl;
+        cout << "Taxa de compactação.......... : " << comp << "%" << endl;
+        cout << "Média de bits por caractere.. : " << codifica -> getMediaBits() << endl;
+        printf("Tempo consumido.............. : %.f ms", (tF-tI)/1000);
+
+    }/*Descompacta arquivo*/
+    else if (strcmp(argv[1], "-d") == 0) {
         Arquivo * descompactar;
         int k = 0;
         descompactar = new Arquivo(argv[2]);
@@ -75,10 +89,16 @@ int main(int argc, char ** argv) {
         estatistica -> filtraFrequencia(descompactar -> getTamanhoVetorAscii(), descompactar -> getFrequenciaCaracteres());
 
         Huffman * decodifica = new Huffman(descompactar->getTamanhoArquivoOrigem());
+        cout << "encode" << endl;
         decodifica -> encodeHuffman(estatistica -> getFrequenciaAscii());
+        cout << "cria codigo" << endl;
         decodifica -> criaCodigo(decodifica -> getRoot(), decodifica -> getCodigoBinario());
-        while (decodifica->getStringSize() < descompactar->getTamanhoCaracteresBinarios())
+        cout << "decodifica" << endl;
+        float z = 0;
+        while (decodifica->getStringSize() < descompactar->getTamanhoCaracteresBinarios()) {
             decodifica -> decodeHuffman(decodifica -> getRoot(), descompactar -> getArquivoDescompactado());
+            cout << (z++ / descompactar->getTamanhoCaracteresBinarios())*100 << "%" << endl;
+        }
         if (argc == 3) {
             while (fileName[k] != '\0') {
                 k++;
@@ -93,26 +113,16 @@ int main(int argc, char ** argv) {
             fileName = argv[3];
         }
         descompactar->gravaArquivoTxt(decodifica->getTextoArquivoDestino(), fileName);
-        //cout << decodifica -> getTextoArquivoDestino() << endl;
+        gettimeofday(&fim, NULL);
+        // Calculando tempo de execução em microsegundos
+        double tI = inicio.tv_sec * 1000000 + (inicio.tv_usec);
+        double tF = fim.tv_sec * 1000000 + (fim.tv_usec);
+        printf("Tempo consumido.............. : %.f ms", (tF - tI) / 1000);
+        cout << endl;
     } else {
         cout << "Uso: huffman [opção] [arq_origem] [arq_destino]" << endl;
-        cout << "[opção] = -c para compactar" << endl;
-        cout << "[opção] = -d para descompactar" << endl;
     }
     cout << endl;
-    /* Testes com argc e argv */
-    //    cout << endl;
-    //    cout << argc << endl;
-    //
-    //    int i = argc;
-    //
-    //    while (argc-- > 0) {
-    //        cout << *argv++ << "[" << i - argc << "]" << endl;
-    //    }
-    //    delete codifica;
-    //    delete estatistica;
-    //    delete compactar;
-
 
     return 0;
 }
