@@ -287,6 +287,14 @@ void Arquivo::gravaArquivoDestino(string texto, char* nomeArquivo) {
     cout << endl << endl;
 }
 
+void Arquivo::gravaArquivoTxt(string texto, char* nomeArquivo) {
+    arquivoDestino = fopen(nomeArquivo, "w+");
+    for (int i = 0; i < texto.size(); i++)
+        putc(texto[i], arquivoDestino);
+    fclose(arquivoDestino);
+    cout << endl << endl;
+}
+
 void Arquivo::leArquivoDestino(char* nomeArquivo) {
     const int size = 8;
     bitset <size> c;

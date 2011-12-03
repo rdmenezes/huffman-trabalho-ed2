@@ -61,15 +61,7 @@ int main(int argc, char ** argv) {
         int k = 0;
         descompactar = new Arquivo(argv[2]);
         char* fileName = argv[2];
-        //        while (fileName[k] != '\0') {
-        //            k++;
-        //            if (fileName[k] == '.') {
-        //                fileName[++k] = 't';
-        //                fileName[++k] = 'x';
-        //                fileName[++k] = 't';
-        //                fileName[++k] = '\0';
-        //            }
-        //        }
+
 
         descompactar->leArquivoDestino(fileName);
         /*Cria objeto para a classe Estatistica e retira as frequencias de valor 0 da lista
@@ -82,7 +74,17 @@ int main(int argc, char ** argv) {
         decodifica -> criaCodigo(decodifica -> getRoot(), decodifica -> getCodigoBinario());
         while (decodifica->getStringSize() < descompactar->getTamanhoCaracteresBinarios())
             decodifica -> decodeHuffman(decodifica -> getRoot(), descompactar -> getArquivoDescompactado());
-        cout << decodifica -> getTextoArquivoDestino() << endl;
+        while (fileName[k] != '\0') {
+            k++;
+            if (fileName[k] == '.') {
+                fileName[++k] = 't';
+                fileName[++k] = 'x';
+                fileName[++k] = 't';
+                fileName[++k] = '\0';
+            }
+        }
+        descompactar->gravaArquivoTxt(decodifica->getTextoArquivoDestino(), fileName);
+        //cout << decodifica -> getTextoArquivoDestino() << endl;
     } else {
         cout << "Uso: huffman [opção] [arq_origem] [arq_destino]" << endl;
         cout << "[opção] = -c para compactar" << endl;

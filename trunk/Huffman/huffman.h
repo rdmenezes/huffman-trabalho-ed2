@@ -44,6 +44,7 @@ public:
     int* contaCaracteres();
     void criaArquivoDestino(FILE* arquivoDestino);
     void gravaArquivoDestino(std::string texto, char* nomeArquivo);
+    void gravaArquivoTxt(std::string texto, char* nomeArquivo);
     void leArquivoDestino(char* nomeArquivo);
     const int getTamanhoVetorAscii() const;
     int* getFrequenciaCaracteres() const;
