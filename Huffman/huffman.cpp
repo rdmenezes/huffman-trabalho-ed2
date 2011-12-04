@@ -6,6 +6,7 @@ Arquivo::Arquivo(char* nomeArquivo) : tamanhoVetorAscii(256) {
     frequenciaCaracteres = new int[tamanhoVetorAscii];
     textoArquivoOrigem = "";
     quantidadeBitsets = 0;
+    numNomeOriginal = 0;
     int i;
     for (i = 0; i < tamanhoVetorAscii; i++)
         frequenciaCaracteres[i] = 0;
@@ -165,15 +166,21 @@ void Huffman::imprimeTeste(int* texto, long tamanhoArquivo) {
     size_t const bitstam(textoArquivoDestino.length());
 }
 
-void Arquivo::gravaArquivoDestino(string texto, char* nomeArquivo) {
+void Arquivo::gravaArquivoDestino(string texto, char* nomeArquivo, char* nomeOriginal) {
     const int size = 8;
     string teste = "";
-    int k, j;
+    long j=0;
+    while (nomeOriginal[j]!='\0')
+        j++;
+    j++;
+    numNomeOriginal = j;
     tamanhoCaracteresBinarios = texto.size();
     arquivoDestino = fopen(nomeArquivo, "wb+");
+    fwrite(&numNomeOriginal, sizeof(int), 1, arquivoDestino);
+    fwrite(nomeOriginal, sizeof(char), numNomeOriginal, arquivoDestino);
     fwrite(&tamanhoCaracteresBinarios, sizeof (int), 1, arquivoDestino);
     fwrite(frequenciaCaracteres, sizeof (int), tamanhoVetorAscii, arquivoDestino);
-    cout << endl;
+    //cout << endl;
     unsigned int i = 0;
     while (i < texto.size()) {
         teste += texto[i++];
@@ -196,27 +203,29 @@ void Arquivo::gravaArquivoDestino(string texto, char* nomeArquivo) {
     tamanhoArquivoDestino = ftell(arquivoDestino);
     rewind(arquivoDestino);
     fclose(arquivoDestino);
-    cout << endl << endl;
+    //cout << endl << endl;
 }
 
-void Arquivo::gravaArquivoTxt(string texto, char* nomeArquivo) {
-    arquivoDestino = fopen(nomeArquivo, "w+");
+void Arquivo::gravaArquivoTxt(string texto) {
+    arquivoDestino = fopen(nomeArquivoOriginal, "w+");
     for (int i = 0; i < texto.size(); i++)
         putc(texto[i], arquivoDestino);
     fclose(arquivoDestino);
-    cout << endl << endl;
+    //cout << endl << endl;
 }
 
 void Arquivo::leArquivoDestino(char* nomeArquivo) {
     const int size = 8;
     bitset <size> c;
-    int k, j = 0;
     arquivoCompactado = fopen(nomeArquivo, "rb");
+    fread(&numNomeOriginal, sizeof(int), 1, arquivoCompactado);
+    nomeArquivoOriginal = (char*) malloc(numNomeOriginal+1);
+    fread(nomeArquivoOriginal, sizeof(char), numNomeOriginal, arquivoCompactado);
     fread(&tamanhoCaracteresBinarios, sizeof (int), 1, arquivoCompactado);
     fread(frequenciaCaracteres, sizeof (int), tamanhoVetorAscii, arquivoCompactado);
 //    for (k = 0; k < tamanhoVetorAscii; k++)
 //        cout << k << "--->" << "[" << frequenciaCaracteres[k] << "]" << '\t';
-    cout << endl;
+    //cout << endl;
 //    cout << "tamanhoCaracteresCompactados: " << tamanhoCaracteresBinarios << endl;
 //    while (k++ < tamanhoVetorAscii)
 //        cout << frequenciaCaracteres[k];

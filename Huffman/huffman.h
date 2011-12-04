@@ -30,11 +30,12 @@ private:
     FILE* arquivoOrigem;
     FILE* arquivoDestino;
     FILE* arquivoCompactado;
-    std::bitset<8> outbit;
     int quantidadeBitsets; 
     long tamanhoArquivoOrigem;
     long tamanhoArquivoDestino;
     const int tamanhoVetorAscii;
+    long numNomeOriginal;
+    char* nomeArquivoOriginal;
     int* frequenciaCaracteres;
     int* textoOriginal;
     int tamanhoCaracteresBinarios;
@@ -44,8 +45,8 @@ public:
     Arquivo(char* nomeArquivo);
     int* contaCaracteres();
     void criaArquivoDestino(FILE* arquivoDestino);
-    void gravaArquivoDestino(std::string texto, char* nomeArquivo);
-    void gravaArquivoTxt(std::string texto, char* nomeArquivo);
+    void gravaArquivoDestino(std::string texto, char* nomeArquivo, char* nomeOriginal);
+    void gravaArquivoTxt(std::string texto);
     void leArquivoDestino(char* nomeArquivo);
     const int getTamanhoVetorAscii() const;
     int* getFrequenciaCaracteres() const;

@@ -35,7 +35,18 @@ int main(int argc, char ** argv) {
         compactar = new Arquivo(argv[2]);
         int k = 0;
         char* fileName = argv[2];
-
+        char* original;
+        while (argv[2][k]!= '\0')
+            k++;
+        original = (char*) malloc(k+1);
+        k=0;
+        while (argv[2][k]!= '\0'){
+            original[k] = argv[2][k];
+            k++;
+        }
+        k++;
+        original[k] = '\0';
+        k = 0;
         /* Conta caracteres do arquivo */
         compactar -> contaCaracteres();
         /*Cria objeto para a classe Estatistica e retira as frequencias de valor 0 da lista
@@ -60,7 +71,7 @@ int main(int argc, char ** argv) {
         } else if (argc == 4) {
             fileName = argv[3];
         }
-        compactar->gravaArquivoDestino(codifica->getTextoArquivoDestino(), fileName);
+        compactar->gravaArquivoDestino(codifica->getTextoArquivoDestino(), fileName, original);
         gettimeofday(&fim, NULL);
         // Calculando tempo de execução em microsegundos
         double tI = inicio.tv_sec*1000000 + (inicio.tv_usec);
@@ -73,7 +84,7 @@ int main(int argc, char ** argv) {
         cout << "Taxa de compactação.......... : " << comp << "%" << endl;
         cout << "Média de bits por caractere.. : " << codifica -> getMediaBits() << endl;
         printf("Tempo consumido.............. : %.f ms", (tF-tI)/1000);
-
+        cout << endl;
     }/*Descompacta arquivo*/
     else if (strcmp(argv[1], "-d") == 0) {
         Arquivo * descompactar;
@@ -89,41 +100,32 @@ int main(int argc, char ** argv) {
         estatistica -> filtraFrequencia(descompactar -> getTamanhoVetorAscii(), descompactar -> getFrequenciaCaracteres());
 
         Huffman * decodifica = new Huffman(descompactar->getTamanhoArquivoOrigem());
-        cout << "encode" << endl;
+        //cout << "encode" << endl;
         decodifica -> encodeHuffman(estatistica -> getFrequenciaAscii());
-        cout << "cria codigo" << endl;
+        //cout << "cria codigo" << endl;
         decodifica -> criaCodigo(decodifica -> getRoot(), decodifica -> getCodigoBinario());
-        cout << "decodifica" << endl;
+        //cout << "decodifica" << endl;
         float z = 0;
         while (decodifica->getStringSize() < descompactar->getTamanhoCaracteresBinarios()) {
             decodifica -> decodeHuffman(decodifica -> getRoot(), descompactar -> getArquivoDescompactado());
-            cout << (z++ / descompactar->getTamanhoCaracteresBinarios())*100 << "%" << endl;
+            //cout << (z++ / descompactar->getTamanhoCaracteresBinarios())*100 << "%" << endl;
         }
         if (argc == 3) {
-            while (fileName[k] != '\0') {
-                k++;
-                if (fileName[k] == '.') {
-                    fileName[++k] = 't';
-                    fileName[++k] = 'x';
-                    fileName[++k] = 't';
-                    fileName[++k] = '\0';
-                }
-            }
-        } else if (argc == 4) {
-            fileName = argv[3];
+            descompactar->gravaArquivoTxt(decodifica->getTextoArquivoDestino());
+            gettimeofday(&fim, NULL);
+            // Calculando tempo de execução em microsegundos
+            double tI = inicio.tv_sec * 1000000 + (inicio.tv_usec);
+            double tF = fim.tv_sec * 1000000 + (fim.tv_usec);
+            printf("Tempo consumido.............. : %.f ms", (tF - tI) / 1000);
+            cout << endl;
+        } else {
+            cout << "Uso: huffman [opção] [arq_origem] [arq_destino]" << endl;
+            return 1;
         }
-        descompactar->gravaArquivoTxt(decodifica->getTextoArquivoDestino(), fileName);
-        gettimeofday(&fim, NULL);
-        // Calculando tempo de execução em microsegundos
-        double tI = inicio.tv_sec * 1000000 + (inicio.tv_usec);
-        double tF = fim.tv_sec * 1000000 + (fim.tv_usec);
-        printf("Tempo consumido.............. : %.f ms", (tF - tI) / 1000);
-        cout << endl;
     } else {
         cout << "Uso: huffman [opção] [arq_origem] [arq_destino]" << endl;
+        return 1;
     }
-    cout << endl;
-
     return 0;
 }
 
